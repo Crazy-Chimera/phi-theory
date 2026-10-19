@@ -1,40 +1,7 @@
-# Resonance registry R_Ω
-# Version: 1.0.0
-
-version: "1.0.0"
-updated: "2026-10-19"
-threshold: 0.8
-
-resonances:
-  - T1: "Phi-Theory"
-    T2: "QED"
-    R_omega: 0.85
-    band:
-      start: 1.0e-5
-      end: 1.0e-3
-      max: 0.85
-
-  - T1: "Phi-Theory"
-    T2: "General Relativity"
-    R_omega: 0.92
-    band:
-      start: 1.0e-7
-      end: 1.0e-5
-      max: 0.92
-
-  - T1: "Phi-Theory"
-    T2: "Quantum Gravity (LQG)"
-    R_omega: 0.75
-    band:
-      start: 1.0e-3
-      end: 1.0e-1
-      max: 0.75
-
-  - T1: "Classical Mechanics"
-    T2: "Quantum Mechanics"
-    R_omega: 0.80
-    band:
-      start: 1.0e-3
-      end: 1.0e-1
-      max: 0.80
-      note: "Mesoscopic regime"
+version: 1.0.0
+updated: '2026-10-19'
+entries:
+- prediction_id: P2
+  status: undecided
+  note: Experiment design ready; awaiting lab data
+  timestamp: '2026-10-19T03:18:00+00:00'
