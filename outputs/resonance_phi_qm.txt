@@ -1,0 +1,4 @@
+Resonance  Phi-Theory  ↔  Quantum Mechanics
+  qualitative (domain overlap)  R_Ω ≈ 0.400
+  spectral   (peak descriptors) R_Ω ≈ 0.518
+  → Partial resonance
