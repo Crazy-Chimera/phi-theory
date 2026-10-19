@@ -1,0 +1,84 @@
+# Theory registry for Ω-RE
+# Version: 1.0.0
+
+version: "1.0.0"
+updated: "2026-10-19"
+
+theories:
+  - name: "Phi-Theory"
+    version: "1.0"
+    author: "Michael Chodounsky"
+    status: "speculative"
+    equations:
+      - "Master equation (see docs/master_equation.md)"
+      - "Ω = (1/Φ) · dΦ/dt"
+    constants:
+      gamma: 1.0e-30
+      eta: 1.0e-30
+    domain:
+      omega_min: 1.0e-12
+      omega_max: 1.0e2
+      description: "All scales"
+    characteristic_omega: "broad"
+    note: "Target theory for Ω-RE testing"
+
+  - name: "QED"
+    version: "standard"
+    status: "confirmed"
+    equations:
+      - "Dirac equation"
+      - "Maxwell equations"
+    constants:
+      alpha: 0.0072973525693
+    domain:
+      omega_min: 1.0e-5
+      omega_max: 1.0e-1
+    characteristic_omega: "high"
+
+  - name: "General Relativity"
+    version: "Einstein 1915"
+    status: "confirmed"
+    equations:
+      - "Einstein field equations"
+    constants:
+      G: 6.67430e-11
+      c: 299792458
+    domain:
+      omega_min: 1.0e-7
+      omega_max: 1.0e-5
+    characteristic_omega: "low"
+
+  - name: "Classical Mechanics"
+    version: "Newton"
+    status: "confirmed"
+    equations:
+      - "Newton's laws of motion"
+    constants: {}
+    domain:
+      omega_min: 1.0e-10
+      omega_max: 1.0e-5
+    characteristic_omega: "low"
+
+  - name: "Quantum Mechanics"
+    version: "standard"
+    status: "confirmed"
+    equations:
+      - "Schrödinger equation"
+      - "Heisenberg uncertainty relations"
+    constants:
+      hbar: 1.054571817e-34
+    domain:
+      omega_min: 1.0e-5
+      omega_max: 1.0e-1
+    characteristic_omega: "high"
+
+  - name: "Quantum Gravity (LQG)"
+    version: "spin networks"
+    status: "speculative"
+    equations:
+      - "Spin networks / Loop Quantum Gravity"
+    constants: {}
+    domain:
+      omega_min: 1.0e-3
+      omega_max: 1.0e1
+    characteristic_omega: "very high"
