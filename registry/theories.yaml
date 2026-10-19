@@ -1,4 +1,4 @@
-version: '1.1.0'
+version: 1.2.0
 updated: '2026-10-19'
 theories:
 - name: Phi-Theory
@@ -6,15 +6,22 @@ theories:
   author: Michael Chodounsky
   status: speculative
   equations:
-  - Master equation
-  - Ω = (1/Φ) · dΦ/dt
+  - 'Master equation: □Φ + Λ(Φ) = (8πG(Φ)/c⁴)·T(C)_μν·g^μν + γ·C(Φ) + η·P̂(Φ)'
+  - 'Elegance: E = C/K'
+  - 'Action: S[Φ] = ∫ d⁴x √(-g) · [(1/2) g^μν ∇_μ Φ ∇_ν Φ − V(Φ) + λ·C(Φ)]'
+  - 'Variational principle: δS[Φ]/δΦ = 0'
+  - 'Mass as complexity rate: m = (ℏ/c²)·⟨dC/dt⟩'
+  - 'Subjective time: τ = 1/(dC/dt)'
+  - 'Generalized Landauer: ΔS ≥ k_B·ΔC'
+  - 'Ω bridge: Ω = (1/Φ)·dΦ/dt  (process; defined in Ω Theory)'
   constants:
     gamma: 1.0e-30
     eta: 1.0e-30
+    note: γ – information-force coupling; η – observer-operator coupling
   domain:
     omega_min: 1.0e-12
     omega_max: 100.0
-    description: All scales
+    description: All scales – from Planck to cosmic
   spectrum:
     type: qualitative
     shape: broad_with_peaks
@@ -31,7 +38,12 @@ theories:
     - 0.4
     - 0.3
   characteristic_omega: broad
-  note: Target theory for Ω-RE testing
+  note: 'Master equation terms: □Φ (wave propagation), Λ(Φ) (cosmological), G(Φ) (variable gravity), T(C) (complexity tensor), γ·C(Φ) (information force), η·P̂(Φ) (conscious observer). Gravity, QM and thermodynamics arise as limits.'
+  description: 'Real scalar field measuring local density of quantum entanglement. Foundation of reality as a network of relationships. Source: Φ Theory – The Language of Reality (31 Aug 2026).'
+  core_idea: Everything that exists is a relationship. Nothing exists in isolation.
+  field: Φ – real scalar field of local entanglement density
+  basic_unit: informion – smallest piece of entangled information
+  highest_law: 'Law of elegance: maximize consistency K, minimize complexity C'
 - name: QED
   version: standard
   status: confirmed
