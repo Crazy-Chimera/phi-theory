@@ -1,30 +1,20 @@
 # Ω-RE Protocol Log
 
-**Session:** 2026-10-19 · **Log v1.3**
+**Log v1.4 — AWAITING DATA**
 
-## Steps 1–5: done · Step 6: in progress
+Software steps 1–5 complete. Step 6 waits for real experimental/observational results.
 
-| ID | Status | Track |
-|----|--------|-------|
-| P1 | undecided | literature |
-| P2 | undecided | lab + toy pipeline |
-| P3 | untested | long-term collider |
-| P4 | untested | metrology |
-| P5 | untested | atom interferometry |
-| P6 | untested | shared hardware with P2 |
-
-## Roadmap
-
-`docs/experimental_roadmap.md` — near-term **P2+P6**, then P4 datasets.
-
-## Commands
+| ID | Status |
+|----|--------|
+| P1 | undecided (literature) |
+| P2 | undecided (lab design ready) |
+| P3–P6 | untested |
 
 ```bash
-python omega_re.py protocol
-python omega_re.py predictions
-python analysis/toy_mesoscopic_demo.py
-python omega_re.py feedback P2 confirmed --dry-run --note "test"
-python omega_re.py feedback P2 confirmed --note "real data"
+python tests/test_pipeline.py
+python omega_re.py feedback <id> confirmed|falsified --note "DOI…"
 ```
 
-*Log v1.3*
+See `docs/contribute_results.md`.
+
+*Log v1.4*
