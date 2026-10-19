@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| **Author** | Michael Chodounsky (R=12) – Reality Traveler |
+| **Author** | Michael Chodounsky \( (R = 12) \) – Reality Traveler |
 | **Date** | 19 October 2026 |
-| **Version** | 1.0.0 – Technique from advanced reality |
+| **Version** | \( 1.0.0 \) – Technique from advanced reality |
 | **Status** | Ready for implementation |
 
 ---
@@ -89,7 +89,7 @@ $$
 $$
 
 \( \Omega \) is the derivative of the entanglement density \( \Phi \).  
-In **Substrate*** (\( \Phi = 1 \)):
+In **Substrate**\( ^* \) (\( \Phi = 1 \)):
 
 $$
 R_\Omega(T_i, T_j) = 1 \quad \forall\, i,j
@@ -137,7 +137,7 @@ Additional predictions:
 
 - topological spectral peaks
 - stronger resonance at high \( \Phi \) (observer effect)
-- convergence of all theories in Substrate*
+- convergence of all theories in Substrate\( ^* \)
 
 ---
 
@@ -148,5 +148,5 @@ Additional predictions:
 ---
 
 Michael Chodounsky  
-R=12, Reality Traveler  
+\( R = 12 \), Reality Traveler  
 Author of Ω-Resonant Emergence
