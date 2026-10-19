@@ -17,13 +17,13 @@ The correspondence principle is one of the greatest achievements of 20th-century
 
 Yet it has five fundamental limitations:
 
-1. **Unidirectionality** — only Q → C, never C → Q  
-2. **Static limit** (ℏ → 0) — describes the end point, not the path  
-3. **Ignoring topology** — Aharonov–Bohm, quantum Hall, topological insulators  
-4. **Failure with quantum gravity** — no merging limit exists  
+1. **Unidirectionality** — only \( Q \to C \), never \( C \to Q \)
+2. **Static limit** \( (\hbar \to 0) \) — describes the end point, not the path
+3. **Ignoring topology** — Aharonov–Bohm, quantum Hall, topological insulators
+4. **Failure with quantum gravity** — no merging limit exists
 5. **Ignoring the observer** — consciousness is absent from the theory
 
-In advanced reality the correspondence principle is only a one-dimensional projection of a richer structure: **Ω-resonance**. The technique that utilises it is **Ω-Resonant Emergence (Ω-RE)**.
+In advanced reality the correspondence principle is only a one-dimensional projection of a richer structure: **Ω-resonance**. The technique that utilises it is **Ω-Resonant Emergence (\u03a9-RE)**.
 
 ---
 
@@ -64,7 +64,11 @@ $$
 B(T_1, T_2) = \{ \Omega : R_\Omega(T_1, T_2) > R_{\mathrm{threshold}} \}
 $$
 
-Default threshold: \( R_{\mathrm{threshold}} = 0.8 \).
+Default threshold:
+
+$$
+R_{\mathrm{threshold}} = 0.8
+$$
 
 ### 1.4 Emergent kernel
 
@@ -84,7 +88,7 @@ $$
 \Omega = \frac{1}{\Phi} \frac{d\Phi}{dt}
 $$
 
-Ω is the derivative of the entanglement density \( \Phi \).  
+\( \Omega \) is the derivative of the entanglement density \( \Phi \).  
 In **Substrate*** (\( \Phi = 1 \)):
 
 $$
@@ -95,109 +99,47 @@ $$
 
 ## Part II — Algorithm (6 Steps)
 
-1. **Spectral decomposition** — compute normalised \( S_T(\omega) \) for every theory  
-2. **Resonance computation** — build the full matrix \( R_\Omega \)  
-3. **Band identification** — locate intervals above threshold  
-4. **Emergent derivation** — compute kernel \( K \) and transform equations  
-5. **Prediction generation** — extract deviations + falsification conditions  
-6. **Feedback** — strengthen / weaken bands from experimental results  
+1. **Spectral decomposition** — compute normalised \( S_T(\omega) \) for every theory
+2. **Resonance computation** — build the full matrix \( R_\Omega \)
+3. **Band identification** — locate intervals above threshold
+4. **Emergent derivation** — compute kernel \( K \) and transform equations
+5. **Prediction generation** — extract deviations + falsification conditions
+6. **Feedback** — strengthen / weaken bands from experimental results
 
 ---
 
 ## Part III — Comparison
 
-| Aspect              | Correspondence Principle | Ω-RE                          |
-|---------------------|--------------------------|-------------------------------|
-| Direction           | Unidirectional (Q → C)   | Bidirectional (Q ↔ C)         |
-| Mechanism           | Limit ℏ → 0              | Resonance (Ω-spectrum)        |
-| Statics             | Static                   | Dynamic                       |
-| Topology            | Ignored                  | Spectral peaks                |
-| Emergence           | Implied                  | Explicit                      |
-| Predictions         | None                     | Yes                           |
-| Quantum gravity     | Fails                    | Works                         |
-| Observer            | Ignored                  | Integrated                    |
-| Relation to Φ       | Unclear                  | Direct (Ω = dΦ/dt / Φ)        |
+| Aspect | Correspondence Principle | Ω-RE |
+|--------|--------------------------|------|
+| Direction | Unidirectional \( (Q \to C) \) | Bidirectional \( (Q \leftrightarrow C) \) |
+| Mechanism | Limit \( \hbar \to 0 \) | Resonance (\u03a9-spectrum) |
+| Statics | Static | Dynamic |
+| Topology | Ignored | Spectral peaks |
+| Emergence | Implied | Explicit |
+| Predictions | None | Yes |
+| Quantum gravity | Fails | Works |
+| Observer | Ignored | Integrated |
+| Relation to \( \Phi \) | Unclear | Direct \( \bigl( \Omega = \tfrac{1}{\Phi}\tfrac{d\Phi}{dt} \bigr) \) |
 
 ---
 
 ## Part IV — Examples & Predictions
 
-| Pair                     | Regime                  | Observable signature                          |
-|--------------------------|-------------------------|-----------------------------------------------|
-| Classical ↔ Quantum      | Mesoscopic (10–1000 at) | Deviations in quantum dots / resonators       |
-| Newton ↔ GR              | Weak field              | Mercury precession, light deflection          |
-| QM ↔ Quantum Gravity     | Planck scale            | Deviations in gravitational waves             |
-| Standard Model ↔ Φ       | Low energy (LHC)        | Anomalous magnetic moment, Lamb shift         |
+| Pair | Regime | Observable signature |
+|------|--------|----------------------|
+| Classical \( \leftrightarrow \) Quantum | Mesoscopic \( (10\text{–}1000\ \mathrm{atoms}) \) | Deviations in quantum dots / resonators |
+| Newton \( \leftrightarrow \) GR | Weak field | Mercury precession, light deflection |
+| QM \( \leftrightarrow \) Quantum Gravity | Planck scale | Deviations in gravitational waves |
+| Standard Model \( \leftrightarrow \) \( \Phi \) | Low energy (LHC) | Anomalous magnetic moment, Lamb shift |
 
-Additional predictions: topological spectral peaks, stronger resonance at high Φ (observer effect), convergence of all theories in Substrate*.
+Additional predictions:
 
----
-
-## Part V — Implementation & Quick Start
-
-### Requirements
-
-```bash
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### Project layout
-
-```
-phi-theory/
-├── core/
-│   ├── spectrum.py       # Spectral decomposition
-│   ├── resonance.py      # R_Ω computation
-│   └── emergence.py      # Kernel + band identification
-├── analysis/
-│   ├── bands.py
-│   ├── predictions.py    # Prediction generation
-│   └── feedback.py       # Feedback loop
-├── registry/
-│   ├── theories.yaml
-│   ├── predictions.yaml
-│   └── resonances.yaml
-├── docs/
-├── omega_re.py           # CLI entry point (assistant)
-├── requirements.txt
-└── README.md
-```
-
-### Run the assistant
-
-```bash
-# Show theory registry
-python omega_re.py list-theories
-
-# Compute resonance between two theories (qualitative)
-python omega_re.py resonance "Classical Mechanics" "Quantum Mechanics"
-
-# Identify bands (demo with synthetic spectra)
-python omega_re.py demo-bands
-
-# Full pipeline demo
-python omega_re.py run
-```
+- topological spectral peaks
+- stronger resonance at high \( \Phi \) (observer effect)
+- convergence of all theories in Substrate*
 
 ---
-
-## Part VI — Feedback Loop
-
-1. Spectral decomposition → 2. Resonance matrix → 3. Band ID →  
-4. Emergent derivation → 5. Predictions → 6. Experiment →  
-7. Update bands → repeat.
-
-- Confirmed prediction → strengthen band  
-- Falsified prediction → weaken band  
-- Undecided → keep and wait  
-
----
-
-## Conclusion
-
-Ω-RE is bidirectional, dynamic, topology-aware, observer-integrated, predictive, and directly derived from Phi-Theory. It is a language for relations between theories and a bridge toward Substrate*.
 
 *This is Ω-RE. This is elegance. This is advanced reality.*
 
