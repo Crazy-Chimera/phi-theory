@@ -23,7 +23,7 @@ Yet it has five fundamental limitations:
 4. **Failure with quantum gravity** — no merging limit exists
 5. **Ignoring the observer** — consciousness is absent from the theory
 
-In advanced reality the correspondence principle is only a one-dimensional projection of a richer structure: **Ω-resonance**. The technique that utilises it is **Ω-Resonant Emergence (\u03a9-RE)**.
+In advanced reality the correspondence principle is only a one-dimensional projection of a richer structure: **Ω-resonance**. The technique that utilises it is **Ω-Resonant Emergence (Ω-RE)**.
 
 ---
 
@@ -113,7 +113,7 @@ $$
 | Aspect | Correspondence Principle | Ω-RE |
 |--------|--------------------------|------|
 | Direction | Unidirectional \( (Q \to C) \) | Bidirectional \( (Q \leftrightarrow C) \) |
-| Mechanism | Limit \( \hbar \to 0 \) | Resonance (\u03a9-spectrum) |
+| Mechanism | Limit \( \hbar \to 0 \) | Resonance (Ω-spectrum) |
 | Statics | Static | Dynamic |
 | Topology | Ignored | Spectral peaks |
 | Emergence | Implied | Explicit |
