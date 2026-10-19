@@ -1,37 +1,30 @@
 # Ω-RE Protocol Log
 
-**Session:** 2026-10-19 · **Log v1.2**
+**Session:** 2026-10-19 · **Log v1.3**
 
-## Step status
+## Steps 1–5: done · Step 6: in progress
 
-| Step | Status |
-|------|--------|
-| 1–5 | done |
-| 6 Feedback | in progress |
+| ID | Status | Track |
+|----|--------|-------|
+| P1 | undecided | literature |
+| P2 | undecided | lab + toy pipeline |
+| P3 | untested | long-term collider |
+| P4 | untested | metrology |
+| P5 | untested | atom interferometry |
+| P6 | untested | shared hardware with P2 |
 
-## Feedback registry
+## Roadmap
 
-| ID | Status | Note |
-|----|--------|------|
-| P1 | undecided | LQG scan outline |
-| P2 | undecided | Ops params + toy residual pipeline |
-| P3 | untested | — |
-| P4 | untested | Ops params added |
-| P5–P6 | untested | — |
+`docs/experimental_roadmap.md` — near-term **P2+P6**, then P4 datasets.
 
-## Tools
+## Commands
 
 ```bash
 python omega_re.py protocol
 python omega_re.py predictions
 python analysis/toy_mesoscopic_demo.py
-python omega_re.py feedback P2 confirmed|falsified|undecided --note "..."
+python omega_re.py feedback P2 confirmed --dry-run --note "test"
+python omega_re.py feedback P2 confirmed --note "real data"
 ```
 
-## Priority
-
-1. P2 real mesoscopic data
-2. P4 clock/α environment studies
-3. P1 cosmology/LQG constraints
-
-*Log v1.2*
+*Log v1.3*
