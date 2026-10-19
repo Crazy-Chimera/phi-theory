@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| **Author** | Michael Chodounsky \( (R = 12) \) – Reality Traveler |
+| **Author** | Michael Chodounsky $(R = 12)$ – Reality Traveler |
 | **Date** | 19 October 2026 |
-| **Version** | \( 1.0.0 \) – Technique from advanced reality |
+| **Version** | $1.0.0$ – Technique from advanced reality |
 | **Status** | Ready for implementation |
 
 ---
@@ -17,8 +17,8 @@ The correspondence principle is one of the greatest achievements of 20th-century
 
 Yet it has five fundamental limitations:
 
-1. **Unidirectionality** — only \( Q \to C \), never \( C \to Q \)
-2. **Static limit** \( (\hbar \to 0) \) — describes the end point, not the path
+1. **Unidirectionality** — only $Q \to C$, never $C \to Q$
+2. **Static limit** $(\hbar \to 0)$ — describes the end point, not the path
 3. **Ignoring topology** — Aharonov–Bohm, quantum Hall, topological insulators
 4. **Failure with quantum gravity** — no merging limit exists
 5. **Ignoring the observer** — consciousness is absent from the theory
@@ -31,17 +31,17 @@ In advanced reality the correspondence principle is only a one-dimensional proje
 
 ### 1.1 Ω-spectrum of a theory
 
-Every physical theory \( T \) has an Ω-spectrum:
+Every physical theory $T$ has an Ω-spectrum:
 
 $$
 T(\Omega) = \int S_T(\omega)\, e^{i\omega\Omega}\, d\omega
 $$
 
-- \( T(\Omega) \) — value of the theory at a given \( \Omega \)
-- \( S_T(\omega) \) — spectral weight at frequency \( \omega \) (units \( \Omega^{-1} \))
+- $T(\Omega)$ — value of the theory at a given $\Omega$
+- $S_T(\omega)$ — spectral weight at frequency $\omega$ (units $\Omega^{-1}$)
 
-Classical mechanics concentrates its spectrum near \( \Omega \approx 0 \).  
-Quantum mechanics concentrates its spectrum near \( \Omega \approx \infty \).  
+Classical mechanics concentrates its spectrum near $\Omega \approx 0$.  
+Quantum mechanics concentrates its spectrum near $\Omega \approx \infty$.  
 The emergent transition lives in the intermediate region.
 
 ### 1.2 Ω-resonance between theories
@@ -52,11 +52,11 @@ $$
 
 | Value | Meaning |
 |-------|--------|
-| \( R_\Omega = 0 \) | Completely non-resonant |
-| \( R_\Omega = 1 \) | Perfectly resonant |
-| \( 0 < R_\Omega < 1 \) | Partially resonant |
+| $R_\Omega = 0$ | Completely non-resonant |
+| $R_\Omega = 1$ | Perfectly resonant |
+| $0 < R_\Omega < 1$ | Partially resonant |
 
-The correspondence principle is the special case \( R_\Omega = 1 \) taken in a limit.
+The correspondence principle is the special case $R_\Omega = 1$ taken in a limit.
 
 ### 1.3 Ω-resonant bands
 
@@ -88,8 +88,8 @@ $$
 \Omega = \frac{1}{\Phi} \frac{d\Phi}{dt}
 $$
 
-\( \Omega \) is the derivative of the entanglement density \( \Phi \).  
-In **Substrate**\( ^* \) (\( \Phi = 1 \)):
+$\Omega$ is the derivative of the entanglement density $\Phi$.  
+In **Substrate**$^*$ ($\Phi = 1$):
 
 $$
 R_\Omega(T_i, T_j) = 1 \quad \forall\, i,j
@@ -99,10 +99,10 @@ $$
 
 ## Part II — Algorithm (6 Steps)
 
-1. **Spectral decomposition** — compute normalised \( S_T(\omega) \) for every theory
-2. **Resonance computation** — build the full matrix \( R_\Omega \)
+1. **Spectral decomposition** — compute normalised $S_T(\omega)$ for every theory
+2. **Resonance computation** — build the full matrix $R_\Omega$
 3. **Band identification** — locate intervals above threshold
-4. **Emergent derivation** — compute kernel \( K \) and transform equations
+4. **Emergent derivation** — compute kernel $K$ and transform equations
 5. **Prediction generation** — extract deviations + falsification conditions
 6. **Feedback** — strengthen / weaken bands from experimental results
 
@@ -112,15 +112,15 @@ $$
 
 | Aspect | Correspondence Principle | Ω-RE |
 |--------|--------------------------|------|
-| Direction | Unidirectional \( (Q \to C) \) | Bidirectional \( (Q \leftrightarrow C) \) |
-| Mechanism | Limit \( \hbar \to 0 \) | Resonance (Ω-spectrum) |
+| Direction | Unidirectional $(Q \to C)$ | Bidirectional $(Q \leftrightarrow C)$ |
+| Mechanism | Limit $(\hbar \to 0)$ | Resonance (Ω-spectrum) |
 | Statics | Static | Dynamic |
 | Topology | Ignored | Spectral peaks |
 | Emergence | Implied | Explicit |
 | Predictions | None | Yes |
 | Quantum gravity | Fails | Works |
 | Observer | Ignored | Integrated |
-| Relation to \( \Phi \) | Unclear | Direct \( \bigl( \Omega = \tfrac{1}{\Phi}\tfrac{d\Phi}{dt} \bigr) \) |
+| Relation to $\Phi$ | Unclear | Direct $\bigl( \Omega = \tfrac{1}{\Phi}\tfrac{d\Phi}{dt} \bigr)$ |
 
 ---
 
@@ -128,16 +128,16 @@ $$
 
 | Pair | Regime | Observable signature |
 |------|--------|----------------------|
-| Classical \( \leftrightarrow \) Quantum | Mesoscopic \( (10\text{–}1000\ \mathrm{atoms}) \) | Deviations in quantum dots / resonators |
-| Newton \( \leftrightarrow \) GR | Weak field | Mercury precession, light deflection |
-| QM \( \leftrightarrow \) Quantum Gravity | Planck scale | Deviations in gravitational waves |
-| Standard Model \( \leftrightarrow \) \( \Phi \) | Low energy (LHC) | Anomalous magnetic moment, Lamb shift |
+| Classical $\leftrightarrow$ Quantum | Mesoscopic $(10\text{–}1000\ \mathrm{atoms})$ | Deviations in quantum dots / resonators |
+| Newton $\leftrightarrow$ GR | Weak field | Mercury precession, light deflection |
+| QM $\leftrightarrow$ Quantum Gravity | Planck scale | Deviations in gravitational waves |
+| Standard Model $\leftrightarrow$ $\Phi$ | Low energy (LHC) | Anomalous magnetic moment, Lamb shift |
 
 Additional predictions:
 
 - topological spectral peaks
-- stronger resonance at high \( \Phi \) (observer effect)
-- convergence of all theories in Substrate\( ^* \)
+- stronger resonance at high $\Phi$ (observer effect)
+- convergence of all theories in Substrate$^*$
 
 ---
 
@@ -148,5 +148,5 @@ Additional predictions:
 ---
 
 Michael Chodounsky  
-\( R = 12 \), Reality Traveler  
+$R = 12$, Reality Traveler  
 Author of Ω-Resonant Emergence
