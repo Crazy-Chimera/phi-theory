@@ -1,165 +1,165 @@
-version: 1.2.0
+version: 1.3.0
 updated: '2026-10-19'
+sources_note: Constants and status cross-checked against CODATA, precision QED (g-2, alpha), Living Reviews GR (Will), LQG numerics 2024-2026, PDG-style SM, Phi Theory document (Chodounsky 2026).
 theories:
 - name: Phi-Theory
   version: '1.0'
   author: Michael Chodounsky
   status: speculative
   equations:
-  - 'Master equation: □Φ + Λ(Φ) = (8πG(Φ)/c⁴)·T(C)_μν·g^μν + γ·C(Φ) + η·P̂(Φ)'
+  - 'Master equation: Box Phi + Lambda(Phi) = (8 pi G(Phi)/c^4) T(C)_munu g^munu + gamma C(Phi) + eta P-hat(Phi)'
   - 'Elegance: E = C/K'
-  - 'Action: S[Φ] = ∫ d⁴x √(-g) · [(1/2) g^μν ∇_μ Φ ∇_ν Φ − V(Φ) + λ·C(Φ)]'
-  - 'Variational principle: δS[Φ]/δΦ = 0'
-  - 'Mass as complexity rate: m = (ℏ/c²)·⟨dC/dt⟩'
-  - 'Subjective time: τ = 1/(dC/dt)'
-  - 'Generalized Landauer: ΔS ≥ k_B·ΔC'
-  - 'Ω bridge: Ω = (1/Φ)·dΦ/dt  (process; defined in Ω Theory)'
+  - 'Action: S[Phi] = integral d^4x sqrt(-g) [(1/2) g^munu grad_mu Phi grad_nu Phi - V(Phi) + lambda C(Phi)]'
+  - 'Variational principle: delta S[Phi]/delta Phi = 0'
+  - 'Mass as complexity rate: m = (hbar/c^2) <dC/dt>'
+  - 'Subjective time: tau = 1/(dC/dt)'
+  - 'Generalized Landauer: Delta S >= k_B Delta C'
+  - 'Omega bridge: Omega = (1/Phi) dPhi/dt'
   constants:
     gamma: 1.0e-30
     eta: 1.0e-30
-    note: γ – information-force coupling; η – observer-operator coupling
   domain:
     omega_min: 1.0e-12
     omega_max: 100.0
-    description: All scales – from Planck to cosmic
+    description: All scales
   spectrum:
     type: qualitative
     shape: broad_with_peaks
-    peak_centers:
-    - 1.0e-06
-    - 0.01
-    - 1.0
-    peak_widths:
-    - 2.0
-    - 1.5
-    - 1.0
-    peak_weights:
-    - 0.3
-    - 0.4
-    - 0.3
+    peak_centers: [1.0e-6, 0.01, 1.0]
+    peak_widths: [2.0, 1.5, 1.0]
+    peak_weights: [0.3, 0.4, 0.3]
   characteristic_omega: broad
-  note: 'Master equation terms: □Φ (wave propagation), Λ(Φ) (cosmological), G(Φ) (variable gravity), T(C) (complexity tensor), γ·C(Φ) (information force), η·P̂(Φ) (conscious observer). Gravity, QM and thermodynamics arise as limits.'
-  description: 'Real scalar field measuring local density of quantum entanglement. Foundation of reality as a network of relationships. Source: Φ Theory – The Language of Reality (31 Aug 2026).'
+  verification: Speculative (Chodounsky 2026). Recovers GR/QM limits; needs lab tests (g-2, G(Phi), mesoscopic).
+  relevance_to_phi: Core theory under test.
   core_idea: Everything that exists is a relationship. Nothing exists in isolation.
-  field: Φ – real scalar field of local entanglement density
-  basic_unit: informion – smallest piece of entangled information
-  highest_law: 'Law of elegance: maximize consistency K, minimize complexity C'
+  field: Phi - real scalar field of local entanglement density
+  basic_unit: informion
+  highest_law: Maximize consistency K, minimize complexity C
 - name: QED
-  version: standard
+  version: standard (precision-tested)
   status: confirmed
   equations:
   - Dirac equation
   - Maxwell equations
+  - QED Lagrangian interaction e psi-bar gamma^mu psi A_mu
+  - alpha = e^2/(4 pi) (running)
   constants:
-    alpha: 0.0072973525693
+    alpha_inv: 137.035999166
+    alpha_relative_uncertainty: ~2e-10
   domain:
-    omega_min: 1.0e-05
+    omega_min: 1.0e-5
     omega_max: 0.1
   spectrum:
     type: qualitative
     shape: discrete
-    peak_centers:
-    - 0.0001
-    - 0.001
-    - 0.01
-    peak_widths:
-    - 0.5
-    - 0.5
-    - 0.8
-    peak_weights:
-    - 0.4
-    - 0.4
-    - 0.2
+    peak_centers: [1.0e-4, 1.0e-3, 1.0e-2]
+    peak_widths: [0.5, 0.5, 0.8]
+    peak_weights: [0.4, 0.4, 0.2]
   characteristic_omega: high
+  verification: Electron g-2 to ~0.28 ppt; alpha consistent across methods to ~1e-9..1e-10. Most precisely tested sector of physics.
+  relevance_to_phi: Possible Phi-dependent corrections to alpha / g-2 in high-Phi environments.
 - name: General Relativity
-  version: Einstein 1915
+  version: Einstein 1915 + post-Newtonian tests
   status: confirmed
   equations:
-  - Einstein field equations
+  - 'Einstein field equations: R_munu - 1/2 g_munu R + Lambda g_munu = (8 pi G/c^4) T_munu'
+  - Geodesic equation
   constants:
-    G: 6.6743e-11
+    G: 6.67430e-11
     c: 299792458
   domain:
-    omega_min: 1.0e-07
-    omega_max: 1.0e-05
+    omega_min: 1.0e-7
+    omega_max: 1.0e-5
   spectrum:
     type: qualitative
     shape: medium
-    peak_centers:
-    - 1.0e-06
-    peak_widths:
-    - 1.0
-    peak_weights:
-    - 1.0
+    peak_centers: [1.0e-6]
+    peak_widths: [1.0]
+    peak_weights: [1.0]
   characteristic_omega: low
+  verification: Cassini gamma-1~(2.1+/-2.3)e-5; LLR beta-1~(1.2+/-1.1)e-4; binary pulsars ~0.05%; LIGO/Virgo/KAGRA waveforms consistent with GR; DESI cosmological tests support GR.
+  relevance_to_phi: Recovered as low-curvature low-consciousness limit of master equation; predicts G=G(Phi).
 - name: Classical Mechanics
-  version: Newton
-  status: confirmed
+  version: Newton + Hamilton-Jacobi
+  status: confirmed (regime-limited)
   equations:
-  - Newton's laws of motion
+  - 'F = ma'
+  - Hamilton-Jacobi equation
+  - 'Validity: v << c and S >> hbar'
   constants: {}
   domain:
     omega_min: 1.0e-10
-    omega_max: 1.0e-05
+    omega_max: 1.0e-5
   spectrum:
     type: qualitative
     shape: narrow
-    peak_centers:
-    - 1.0e-08
-    peak_widths:
-    - 0.8
-    peak_weights:
-    - 1.0
+    peak_centers: [1.0e-8]
+    peak_widths: [0.8]
+    peak_weights: [1.0]
   characteristic_omega: low
+  verification: Valid for macroscopic slow systems. Quantum-classical transition via decoherence/continuous measurement; mesoscopic 10-1000 atoms is critical test bed.
+  relevance_to_phi: Emerges when entanglement weak and action large; mesoscopic deviations are primary Phi/Omega-RE targets.
 - name: Quantum Mechanics
   version: standard
   status: confirmed
   equations:
-  - Schrödinger equation
-  - Heisenberg uncertainty relations
+  - 'Schrodinger equation: i hbar dpsi/dt = H psi'
+  - 'Heisenberg uncertainty: dx dp >= hbar/2'
+  - Born rule
   constants:
     hbar: 1.054571817e-34
   domain:
-    omega_min: 1.0e-05
+    omega_min: 1.0e-5
     omega_max: 0.1
   spectrum:
     type: qualitative
     shape: discrete
-    peak_centers:
-    - 0.0001
-    - 0.005
-    - 0.03
-    peak_widths:
-    - 0.4
-    - 0.5
-    - 0.6
-    peak_weights:
-    - 0.35
-    - 0.35
-    - 0.3
+    peak_centers: [1.0e-4, 5.0e-3, 3.0e-2]
+    peak_widths: [0.4, 0.5, 0.6]
+    peak_weights: [0.35, 0.35, 0.3]
   characteristic_omega: high
+  verification: Atomic spectra, interference, Bell tests (Nobel 2022). Classical limit via large action / monitoring.
+  relevance_to_phi: Entanglement is fundamental (Phi-field); observer term eta P-hat extends standard QM.
 - name: Quantum Gravity (LQG)
-  version: spin networks
+  version: Loop Quantum Gravity / spin networks (active research)
   status: speculative
   equations:
-  - Spin networks / Loop Quantum Gravity
-  constants: {}
+  - 'Area operator: A = 8 pi gamma l_P^2 sum sqrt[j(j+1)]'
+  - Spin-network states; Hamiltonian constraint
+  - Spin foams (covariant)
+  constants:
+    Immirzi_parameter: gamma (O(1), not fixed uniquely)
   domain:
     omega_min: 0.001
     omega_max: 10.0
   spectrum:
     type: qualitative
     shape: peaks
-    peak_centers:
-    - 0.01
-    - 0.1
-    - 1.0
-    peak_widths:
-    - 0.6
-    - 0.7
-    - 0.8
-    peak_weights:
-    - 0.3
-    - 0.4
-    - 0.3
+    peak_centers: [0.01, 0.1, 1.0]
+    peak_widths: [0.6, 0.7, 0.8]
+    peak_weights: [0.3, 0.4, 0.3]
   characteristic_omega: very high
+  verification: Background-independent geometry quantisation. Recent graph-changing Hamiltonian numerics, generative flow networks for spin foams, hyperinvariant spin networks. No direct experiment yet.
+  relevance_to_phi: Shared emphasis on discrete relational geometry; informion ~ spin-network node; high-Omega spectral peaks in common domain.
+- name: Standard Model
+  version: SU(3)xSU(2)xU(1) + Higgs
+  status: confirmed (with known gaps)
+  equations:
+  - 'Gauge group SU(3)_C x SU(2)_L x U(1)_Y'
+  - 'Higgs VEV v ~ 246 GeV; m_H ~ 125 GeV'
+  - 'Yukawa masses m_f = y_f v / sqrt(2)'
+  constants:
+    v_Higgs_GeV: 246.0
+    m_Higgs_GeV: 125.0
+  domain:
+    omega_min: 1.0e-5
+    omega_max: 0.1
+  spectrum:
+    type: qualitative
+    shape: discrete
+    peak_centers: [1.0e-4, 1.0e-3, 1.0e-2]
+    peak_widths: [0.5, 0.5, 0.6]
+    peak_weights: [0.4, 0.3, 0.3]
+  characteristic_omega: high
+  verification: Higgs 2012 (ATLAS/CMS); EW and flavour precision tests. Gaps - neutrino masses, dark sector, hierarchy.
+  relevance_to_phi: Target low-energy limit via Phi-field topological defects (particles as knots); precision observables probe Phi corrections.
