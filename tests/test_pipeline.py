@@ -13,7 +13,7 @@ import yaml
 import analysis.feedback as feedback_module
 from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor
 from core.resonance import compute_resonance, qualitative_resonance
-from core.emergence import identify_bands, compute_kernel
+from core.emergence import identify_bands, compute_kernel, local_overlap_profile
 from analysis.feedback import load_predictions, apply_feedback, summary
 
 
@@ -65,6 +65,21 @@ def test_qualitative_and_bands():
     assert len(identify_bands(omega, curve, threshold=0.5)) >= 1
 
 
+
+def test_local_overlap_profile_is_bounded_and_peak_normalized():
+    omega = np.logspace(-3, 2, 501)
+    S1 = np.exp(-((np.log10(omega) - 0.5) ** 2) / 0.2) + 0j
+    S2 = np.exp(-((np.log10(omega) - 0.5) ** 2) / 0.3) + 0j
+    profile = local_overlap_profile(S1, S2, omega, smoothing_window=21)
+    assert profile.shape == omega.shape
+    assert np.all(np.isfinite(profile))
+    assert np.all((profile >= 0.0) & (profile <= 1.0))
+    assert abs(float(profile.max()) - 1.0) < 1e-12
+
+    zeros = local_overlap_profile(np.zeros_like(S1), S2, omega)
+    assert np.all(zeros == 0.0)
+
+
 def test_kernel_finite():
     omega = np.linspace(1, 10, 200)
     kernel = compute_kernel(np.ones_like(omega) + 0j, 0.5 * np.ones_like(omega) + 0j)
@@ -107,6 +122,7 @@ if __name__ == "__main__":
     test_build_descriptor_and_resonance()
     test_invalid_descriptor_rejected()
     test_qualitative_and_bands()
+    test_local_overlap_profile_is_bounded_and_peak_normalized()
     test_kernel_finite()
     test_dry_run_does_not_write_files()
     test_predictions_load_and_dry_run()
