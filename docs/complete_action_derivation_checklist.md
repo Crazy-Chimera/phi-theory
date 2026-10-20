@@ -100,6 +100,7 @@ Use the [model-closure input record](model_closure_input_record.md) to collect e
 
 - [Mathematical specification audit](phi_theory_specification_audit.md)
 - [Master-equation term closure matrix](master_equation_term_closure.md)
+- [Conditional dimensional-closure worksheet](conditional_dimensional_closure.md)
 - [Prediction registry audit](prediction_registry_audit.md)
 - [P2 experiment plan](experiment_P2_mesoscopic.md)
 - [Experimental roadmap](experimental_roadmap.md)
