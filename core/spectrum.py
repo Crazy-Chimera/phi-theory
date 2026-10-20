@@ -7,6 +7,7 @@ T(Omega) = integral S_T(omega) * exp(i * omega * Omega) d omega
 from __future__ import annotations
 
 import numpy as np
+from scipy.integrate import trapezoid
 from typing import Tuple, Optional, Dict, Any
 
 
@@ -27,7 +28,7 @@ def normalize_spectrum(S: np.ndarray, omega: np.ndarray) -> np.ndarray:
     if len(omega) < 2:
         return S.copy()
     _validate_grid(omega)
-    norm_sq = float(np.trapz(np.abs(S) ** 2, x=omega))
+    norm_sq = float(trapezoid(np.abs(S) ** 2, x=omega))
     if not np.isfinite(norm_sq) or norm_sq <= 0:
         return S.copy()
     return S / np.sqrt(norm_sq)
