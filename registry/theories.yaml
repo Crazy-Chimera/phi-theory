@@ -78,7 +78,7 @@ theories:
     peak_weights: [1.0]
   characteristic_omega: low
   verification: Cassini gamma-1~(2.1+/-2.3)e-5; LLR beta; binary pulsars ~0.05%; LIGO/Virgo/KAGRA waveforms; DESI cosmological tests support GR.
-  relevance_to_phi: Recovered as low-curvature low-consciousness limit of master equation; predicts G=G(Phi).
+  relevance_to_phi: Proposed low-curvature limit and G=G(Phi) are hypotheses, not demonstrated recoveries or derived predictions. A complete action, field equations, and comparison with tested GR limits are still required.
 - name: Classical Mechanics
   version: Newton + Hamilton-Jacobi
   status: confirmed (regime-limited)
@@ -98,7 +98,7 @@ theories:
     peak_weights: [1.0]
   characteristic_omega: low
   verification: Valid for macroscopic slow systems. Quantum-classical transition via decoherence; mesoscopic 10-1000 atoms is critical test bed.
-  relevance_to_phi: Emerges when entanglement weak and action large; mesoscopic deviations are primary Phi/Omega-RE targets.
+  relevance_to_phi: Recovery of classical mechanics when entanglement is weak and action is large is a hypothesis, not yet derived from a closed Phi model. Mesoscopic deviations remain proposed targets, not established predictions.
 - name: Quantum Mechanics
   version: standard
   status: confirmed
@@ -119,7 +119,7 @@ theories:
     peak_weights: [0.35, 0.35, 0.3]
   characteristic_omega: high
   verification: Atomic spectra, interference, Bell tests (Nobel 2022). Classical limit via large action / monitoring.
-  relevance_to_phi: Entanglement is fundamental (Phi-field); observer term eta P-hat extends standard QM.
+  relevance_to_phi: The interpretation of entanglement through Phi and any observer term eta P-hat are speculative proposals. No closed derivation of the term or demonstrated recovery of standard QM is recorded here.
 - name: Quantum Gravity (LQG)
   version: Loop Quantum Gravity / spin networks (active research)
   status: speculative
