@@ -40,12 +40,27 @@ def compute_resonance(
     if len(omega) < 2:
         return 0.0
 
-    cross = trapezoid(S1 * np.conj(S2), x=omega)
-    norm1 = float(trapezoid(np.abs(S1) ** 2, x=omega))
-    norm2 = float(trapezoid(np.abs(S2) ** 2, x=omega))
-    if norm1 <= 0 or norm2 <= 0 or not np.isfinite(norm1 * norm2):
+    # Extreme but finite inputs can overflow during products or quadrature.
+    # Treat an unrepresentable overlap as undefined (score 0) rather than
+    # allowing NaN to escape through np.clip.
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        cross = trapezoid(S1 * np.conj(S2), x=omega)
+        norm1 = float(trapezoid(np.abs(S1) ** 2, x=omega))
+        norm2 = float(trapezoid(np.abs(S2) ** 2, x=omega))
+        norm_product = norm1 * norm2
+        numerator = np.abs(cross) ** 2
+    if (
+        norm1 <= 0 or norm2 <= 0
+        or not np.isfinite(norm1)
+        or not np.isfinite(norm2)
+        or not np.isfinite(norm_product)
+        or not np.isfinite(cross)
+        or not np.isfinite(numerator)
+    ):
         return 0.0
-    value = float(np.abs(cross) ** 2 / (norm1 * norm2))
+    value = float(numerator / norm_product)
+    if not np.isfinite(value):
+        return 0.0
     # Numerical quadrature can produce tiny excursions outside the theoretical range.
     return float(np.clip(value, 0.0, 1.0))
 
