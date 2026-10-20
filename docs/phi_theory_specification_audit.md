@@ -79,3 +79,28 @@ If the model cannot provide these details, the correct status remains **blocked 
 ## Scope note
 
 This is a specification audit based on the equations currently stored in the repository. It is not an external peer review, a proof of inconsistency, or evidence for or against the existence of a new physical effect.
+
+
+## 6. Variational check of the displayed action
+
+For the displayed scalar-field part
+\[
+S_\Phi=\int d^4x\sqrt{-g}\left[\tfrac12 g^{\mu\nu}\nabla_\mu\Phi\nabla_\nu\Phi - V(\Phi)+\lambda C(\Phi)\right],
+\]
+assume the metric is fixed during this variation, the boundary term vanishes, and any matter action is denoted by \(S_m\). Define its scalar source by
+\[
+J_m(x):=\frac{1}{\sqrt{-g}}\frac{\delta S_m}{\delta\Phi(x)}.
+\]
+The Euler–Lagrange equation from this action and source is then
+\[
+\Box\Phi+V'(\Phi)-\lambda C'(\Phi)=J_m.
+\]
+This is the equation implied by the written action under those assumptions. The overall sign of the kinetic term and the interpretation of \(\Box\) must be reconciled with an explicitly declared metric signature and convention.
+
+**Comparison with the recorded master-equation ansatz:** the ansatz contains \(\Lambda(\Phi)\), a contracted \(T(C)_{\mu\nu}g^{\mu\nu}\) term multiplied by \(G(\Phi)\), and the terms \(\gamma C(\Phi)\) and \(\eta\hat P(\Phi)\). These do not follow from the displayed scalar action as written. They could be included only after the model specifies their definitions and units and supplies an action or other justified dynamical principle whose variation produces them. In particular, the matter source from a scalar-dependent matter action is not automatically equivalent to the displayed gravitational trace term. The two equations therefore must not be presented as equivalent at this stage.
+
+This check does **not** prove the broader theory inconsistent; it establishes only that the currently documented action is insufficient to derive the current master-equation ansatz. The registry now distinguishes the variational equation from the unclosed ansatz. No arbitrary replacement values or new physical terms have been introduced.
+
+## 7. Required next derivation
+
+Before claiming a corrected, closed master equation, specify: (1) metric signature and units; (2) the full action including gravity and matter; (3) the functional dependence of matter fields on \(\Phi\); (4) explicit \(V,C,G,\Lambda\) and operator \(\hat P\); and (5) the dimensions and independent justification of every coupling. Then vary the full action with respect to both \(\Phi\) and the metric, derive the corresponding field equations, and check each term's dimensions. Until this is done, the registry's master equation is an ansatz, not a verified consequence of the action.
