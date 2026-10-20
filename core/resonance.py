@@ -8,6 +8,7 @@ R = |integral S1(omega) * conjugate(S2(omega)) d omega|^2
 from __future__ import annotations
 
 import numpy as np
+from scipy.integrate import trapezoid
 from typing import Dict, Tuple, Optional
 
 
@@ -35,7 +36,7 @@ def compute_resonance(
         return 0.0
     _validate_grid(omega)
 
-    cross = np.trapz(S1 * np.conj(S2), x=omega)
+    cross = trapezoid(S1 * np.conj(S2), x=omega)
     norm1 = float(np.trapz(np.abs(S1) ** 2, x=omega))
     norm2 = float(np.trapz(np.abs(S2) ** 2, x=omega))
     if norm1 <= 0 or norm2 <= 0 or not np.isfinite(norm1 * norm2):
