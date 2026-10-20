@@ -91,6 +91,7 @@ If any item is unavailable, mark that term **unclosed** rather than supplying a 
 
 ## Related documents
 
+- [Closure decision register](closure_decision_register.md) — dependency-ordered author decisions and evidence required to move from an unclosed ansatz to a derivation and testable predictions.
 - [Mathematical specification audit](phi_theory_specification_audit.md)
 - [Complete-action derivation checklist](complete_action_derivation_checklist.md)
 - [Model-closure input record](model_closure_input_record.md)
