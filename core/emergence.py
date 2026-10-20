@@ -17,8 +17,22 @@ def compute_kernel(
     S2: np.ndarray,
     eps: float = 1e-10,
 ) -> np.ndarray:
-    """Compute emergent kernel K = S2 / S1 with protection against division by zero."""
-    return S2 / (S1 + eps)
+    """Compute emergent kernel K = S2 / (S1 + eps) after validating inputs."""
+    S1 = np.asarray(S1)
+    S2 = np.asarray(S2)
+    if S1.ndim != 1 or S2.ndim != 1:
+        raise ValueError("S1 and S2 must be one-dimensional")
+    if len(S1) != len(S2):
+        raise ValueError("S1 and S2 must have equal lengths")
+    if not np.all(np.isfinite(S1)) or not np.all(np.isfinite(S2)):
+        raise ValueError("S1 and S2 values must be finite")
+    if not np.isscalar(eps) or not np.isfinite(eps) or eps <= 0:
+        raise ValueError("eps must be finite and positive")
+    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+        kernel = S2 / (S1 + eps)
+    if not np.all(np.isfinite(kernel)):
+        raise ValueError("computed kernel contains non-finite values")
+    return kernel
 
 
 def analyze_kernel(
@@ -33,6 +47,23 @@ def analyze_kernel(
     Returns:
         dict with keys: peaks, zeros, max, min
     """
+    K = np.asarray(K)
+    omega = np.asarray(omega, dtype=float)
+    if K.ndim != 1 or omega.ndim != 1:
+        raise ValueError("K and omega must be one-dimensional")
+    if len(K) != len(omega):
+        raise ValueError("K and omega must have equal lengths")
+    if not np.all(np.isfinite(K)) or not np.all(np.isfinite(omega)):
+        raise ValueError("K and omega values must be finite")
+    if len(omega) and np.any(omega <= 0):
+        raise ValueError("omega values must be positive")
+    if len(omega) > 1 and not np.all(np.diff(omega) > 0):
+        raise ValueError("omega must be strictly increasing")
+    if not np.isfinite(peak_height) or not np.isfinite(zero_threshold):
+        raise ValueError("peak_height and zero_threshold must be finite")
+    if peak_height < 0 or zero_threshold < 0:
+        raise ValueError("peak_height and zero_threshold must be non-negative")
+
     abs_K = np.abs(K)
     peaks, _ = find_peaks(abs_K, height=peak_height)
     peak_list = [
@@ -52,6 +83,56 @@ def analyze_kernel(
     }
 
 
+
+def local_overlap_profile(
+    S1: np.ndarray,
+    S2: np.ndarray,
+    omega: np.ndarray,
+    smoothing_window: int = 31,
+) -> np.ndarray:
+    """
+    Return a peak-normalized local spectral-overlap profile for band finding.
+
+    This is a descriptive, pointwise profile, not the global integrated
+    resonance score returned by core.resonance.compute_resonance. The window
+    is applied on the supplied sample grid (normally uniform in log-frequency).
+    """
+    S1 = np.asarray(S1)
+    S2 = np.asarray(S2)
+    omega = np.asarray(omega, dtype=float)
+    if S1.ndim != 1 or S2.ndim != 1 or omega.ndim != 1:
+        raise ValueError("S1, S2, and omega must be one-dimensional")
+    if not (len(S1) == len(S2) == len(omega)):
+        raise ValueError("S1, S2, and omega must have equal lengths")
+    if not np.all(np.isfinite(S1)) or not np.all(np.isfinite(S2)):
+        raise ValueError("S1 and S2 values must be finite")
+    if not np.all(np.isfinite(omega)):
+        raise ValueError("omega values must be finite")
+    if len(omega) == 0:
+        return np.array([], dtype=float)
+    if len(omega) > 1 and not np.all(np.diff(omega) > 0):
+        raise ValueError("omega must be strictly increasing")
+    if not isinstance(smoothing_window, (int, np.integer)) or isinstance(smoothing_window, bool) or smoothing_window < 1:
+        raise ValueError("smoothing_window must be a positive integer")
+
+    profile = np.abs(S1 * np.conj(S2)).astype(float)
+    if not np.all(np.isfinite(profile)):
+        raise ValueError("local overlap profile must remain finite")
+    window = min(int(smoothing_window), len(profile))
+    if window > 1:
+        if window % 2 == 0:
+            window -= 1
+        if window > 1:
+            kernel = np.ones(window, dtype=float) / window
+            profile = np.convolve(profile, kernel, mode="same")
+    maximum = float(np.max(profile))
+    if maximum > 0 and np.isfinite(maximum):
+        profile = profile / maximum
+    else:
+        profile = np.zeros_like(profile)
+    return profile
+
+
 def identify_bands(
     omega: np.ndarray,
     R: np.ndarray,
@@ -63,6 +144,21 @@ def identify_bands(
     Returns:
         list of bands with keys: start, end, center, width, max
     """
+    omega = np.asarray(omega, dtype=float)
+    R = np.asarray(R, dtype=float)
+    if omega.ndim != 1 or R.ndim != 1:
+        raise ValueError("omega and R must be one-dimensional")
+    if len(omega) != len(R):
+        raise ValueError("omega and R must have equal lengths")
+    if not np.isfinite(threshold):
+        raise ValueError("threshold must be finite")
+    if not np.all(np.isfinite(omega)) or not np.all(np.isfinite(R)):
+        raise ValueError("omega and R values must be finite")
+    if np.any(omega <= 0):
+        raise ValueError("omega values must be positive")
+    if len(omega) > 1 and not np.all(np.diff(omega) > 0):
+        raise ValueError("omega must be strictly increasing")
+
     bands = []
     in_band = False
     start = None

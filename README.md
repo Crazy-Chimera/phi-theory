@@ -6,7 +6,7 @@
 |---|---|
 | **Author** | Michael Chodounsky $(R = 12)$ – Reality Traveler |
 | **Repository** | Runnable Ω-RE assistant + Phi-Theory registry |
-| **Status** | Software protocol complete · awaiting experimental feedback |
+| **Status** | Software workflow implemented · physical model closure and experimental validation pending |
 
 ---
 
@@ -32,9 +32,11 @@ $$
 
 ### Bridge
 
-$$
+$
 \Omega = \frac{1}{\Phi}\frac{d\Phi}{dt}
-$$
+$
+
+> **Scientific status:** The master equation above is currently an ansatz, not a derivation from the displayed scalar action. The listed resonance scores are model-internal descriptors; they are not probabilities, confidence levels, or empirically validated effects. P1–P6 remain blocked for confirmatory testing until each has a derived observable, operational measurement mapping, baseline/uncertainty model, and preregistered decision rule. See [`docs/complete_action_derivation_checklist.md`](docs/complete_action_derivation_checklist.md), [`docs/prediction_readiness_gate.md`](docs/prediction_readiness_gate.md), and [`docs/model_closure_input_record.md`](docs/model_closure_input_record.md).
 
 ---
 
@@ -70,12 +72,12 @@ python tests/test_pipeline.py
 
 1. Spectral decomposition → 2. Resonance → 3. Bands → 4. Kernel → 5. Predictions → **6. Feedback**
 
-Steps 1–5 are implemented. Step 6 waits for real data — see `docs/contribute_results.md`.
+Steps 1–5 are implemented. Step 6 waits for real data — see `docs/contribute_results.md`. P2 is not ready for confirmatory testing; see [`docs/prediction_validation_P2.md`](docs/prediction_validation_P2.md).
 
 | ID | Pair | $R_\Omega$ | Status |
 |----|------|------------|--------|
 | P1 | Phi ↔ LQG | 0.591 | undecided |
-| P2 | Phi ↔ QM | 0.518 | undecided (lab design ready) |
+| P2 | Phi ↔ QM | 0.518 | undecided (planning; validation blocked) |
 | P3 | Phi ↔ SM | 0.453 | untested |
 | P4 | Phi ↔ QED | 0.428 | untested |
 | P5 | Phi ↔ GR | 0.225 | untested |
