@@ -197,10 +197,18 @@ def _recover_interrupted_feedback() -> None:
     }
     for key, target in targets.items():
         encoded = snapshots[key]
-        if encoded is None:
+        original = (
+            base64.b64decode(encoded, validate=True)
+            if encoded is not None else None
+        )
+        current = target.read_bytes() if target.exists() else None
+        # Skip writes for files already in their original state.
+        if current == original:
+            continue
+        if original is None:
             target.unlink(missing_ok=True)
         else:
-            _atomic_write_bytes(target, base64.b64decode(encoded, validate=True))
+            _atomic_write_bytes(target, original)
     journal_path.unlink()
 
 def _persist_feedback_pair(
