@@ -25,9 +25,17 @@ The prediction registry contains numerical spectral-overlap scores, Ω-band endp
 4. The statuses untested, undecided, and blocked are not interchangeable. Use blocked in planning documents when essential model specification is absent; do not claim empirical confirmation or falsification.
 5. Do not replace unsupported values with new guessed values. Preserve their provenance and label them as provisional or unsupported until a derivation exists.
 
-## Recommended registry hygiene
+## Registry schema additions (version 1.2.0)
 
-For future changes, add per-prediction fields such as prediction_basis, observable_definition, derivation_reference, lab_mapping_reference, and status_reason. Keep existing numerical values only if clearly labelled as provisional bookkeeping inputs rather than derived physical forecasts. Avoid silently changing schema until the repository's code and validation tests are updated to support it.
+The registry now records the provenance and operational readiness of each P1–P6 entry using these fields:
+
+- `prediction_basis`: currently labels entries as provisional descriptor outputs rather than derived physical predictions.
+- `R_spectral_interpretation`: explicitly marks the overlap score as a model-internal descriptor, not a probability or empirical measurement.
+- `deviation_basis`: marks stored deviation targets as provisional and unsupported until derived.
+- `observable_definition`, `derivation_reference`, and `lab_mapping_reference`: currently null where the registry has no validated operational definition, derivation, or Ω-to-laboratory mapping.
+- `status_reason`: states the principal scientific readiness limitation for each entry.
+
+The existing numerical values and workflow statuses are retained for traceability; they have not been reinterpreted as validated forecasts. Null fields are intentional gaps, not implicit evidence or permission to infer missing physics. The registry schema change documents missing support and does not itself close any model or experimental readiness gate.
 
 ## Scope
 
