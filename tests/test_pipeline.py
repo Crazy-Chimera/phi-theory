@@ -149,6 +149,23 @@ def test_overlap_and_band_functions_reject_invalid_inputs():
         identify_bands(np.array([1.0, 2.0]), np.array([0.9, np.inf]))
 
 
+def test_kernel_functions_reject_invalid_inputs():
+    with np.testing.assert_raises_regex(ValueError, "S1 and S2 must have equal lengths"):
+        compute_kernel(np.ones(2), np.ones(3))
+    with np.testing.assert_raises_regex(ValueError, "S1 and S2 values must be finite"):
+        compute_kernel(np.array([1.0, np.nan]), np.ones(2))
+    with np.testing.assert_raises_regex(ValueError, "eps must be finite and positive"):
+        compute_kernel(np.ones(2), np.ones(2), eps=0.0)
+    with np.testing.assert_raises_regex(ValueError, "computed kernel contains non-finite values"):
+        compute_kernel(np.array([-1e-10]), np.ones(1), eps=1e-10)
+    with np.testing.assert_raises_regex(ValueError, "K and omega must have equal lengths"):
+        from core.emergence import analyze_kernel
+        analyze_kernel(np.ones(2), np.array([1.0]))
+    with np.testing.assert_raises_regex(ValueError, "K and omega values must be finite"):
+        from core.emergence import analyze_kernel
+        analyze_kernel(np.array([1.0, np.inf]), np.array([1.0, 2.0]))
+
+
 
 def test_discrete_spectrum_rejects_invalid_inputs():
     grid = np.linspace(-2.0, 2.0, 101)
@@ -548,6 +565,7 @@ if __name__ == "__main__":
     test_qualitative_and_bands()
     test_local_overlap_profile_is_bounded_and_peak_normalized()
     test_overlap_and_band_functions_reject_invalid_inputs()
+    test_kernel_functions_reject_invalid_inputs()
     test_kernel_finite()
     test_dry_run_does_not_write_files()
     test_predictions_load_and_dry_run()
