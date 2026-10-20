@@ -16,6 +16,7 @@ from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor
 from core.resonance import compute_resonance, qualitative_resonance
 from core.emergence import identify_bands, compute_kernel, local_overlap_profile
 from analysis.feedback import load_predictions, apply_feedback, summary
+from analysis.predictions import save_predictions as save_prediction_records
 
 
 def test_normalize_spectrum_nonuniform_grid():
@@ -114,6 +115,30 @@ def test_predictions_load_and_dry_run():
     before = summary()
     apply_feedback(prediction_id, "confirmed", note="test", dry_run=True)
     assert summary() == before
+
+
+
+def test_prediction_save_preserves_registry_metadata():
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        path = Path(tmp_dir) / "predictions.yaml"
+        original = {
+            "version": "1.1.0",
+            "updated": "2026-10-19",
+            "description": "Predictions from spectral Ω-RE bands",
+            "custom_metadata": {"source": "audit"},
+            "predictions": [{"id": "P-old", "status": "untested"}],
+        }
+        path.write_text(yaml.safe_dump(original, allow_unicode=True), encoding="utf-8")
+
+        replacement = [{"id": "P-new", "status": "undecided"}]
+        save_prediction_records(replacement, path)
+        saved = yaml.safe_load(path.read_text(encoding="utf-8"))
+
+        assert saved["version"] == "1.1.0"
+        assert saved["description"] == original["description"]
+        assert saved["custom_metadata"] == original["custom_metadata"]
+        assert saved["predictions"] == replacement
+        assert saved["updated"] != original["updated"]
 
 
 if __name__ == "__main__":
