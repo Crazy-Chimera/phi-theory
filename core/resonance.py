@@ -35,9 +35,9 @@ def compute_resonance(
         return 0.0
     _validate_grid(omega)
 
-    cross = np.trapezoid(S1 * np.conj(S2), x=omega)
-    norm1 = float(np.trapezoid(np.abs(S1) ** 2, x=omega))
-    norm2 = float(np.trapezoid(np.abs(S2) ** 2, x=omega))
+    cross = np.trapz(S1 * np.conj(S2), x=omega)
+    norm1 = float(np.trapz(np.abs(S1) ** 2, x=omega))
+    norm2 = float(np.trapz(np.abs(S2) ** 2, x=omega))
     if norm1 <= 0 or norm2 <= 0 or not np.isfinite(norm1 * norm2):
         return 0.0
     value = float(np.abs(cross) ** 2 / (norm1 * norm2))
