@@ -161,7 +161,6 @@ def test_kernel_functions_reject_invalid_inputs():
     with np.testing.assert_raises_regex(ValueError, "K and omega must have equal lengths"):
         analyze_kernel(np.ones(2), np.array([1.0]))
     with np.testing.assert_raises_regex(ValueError, "K and omega values must be finite"):
-        from core.emergence import analyze_kernel
         analyze_kernel(np.array([1.0, np.inf]), np.array([1.0, 2.0]))
 
 
