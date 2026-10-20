@@ -18,14 +18,16 @@ RESONANCES_PATH = Path(__file__).resolve().parent.parent / "registry" / "resonan
 VALID_STATUSES = {"confirmed", "falsified", "undecided", "untested"}
 
 
-def load_predictions(path: Path = PREDICTIONS_PATH) -> Dict[str, Any]:
+def load_predictions(path: Optional[Path] = None) -> Dict[str, Any]:
+    path = PREDICTIONS_PATH if path is None else path
     if not path.exists():
         return {"version": "1.1.0", "predictions": []}
     with open(path, encoding="utf-8") as file:
         return yaml.safe_load(file) or {"version": "1.1.0", "predictions": []}
 
 
-def save_predictions(data: Dict[str, Any], path: Path = PREDICTIONS_PATH) -> None:
+def save_predictions(data: Dict[str, Any], path: Optional[Path] = None) -> None:
+    path = PREDICTIONS_PATH if path is None else path
     data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
