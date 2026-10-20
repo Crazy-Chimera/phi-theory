@@ -60,6 +60,8 @@ def apply_feedback(
     status = status.lower().strip()
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status: {status}")
+    if not isinstance(evidence_reference, str):
+        raise ValueError("evidence_reference must be a string")
     evidence_reference = evidence_reference.strip()
     if status in {"confirmed", "falsified"} and not evidence_reference:
         raise ValueError(
