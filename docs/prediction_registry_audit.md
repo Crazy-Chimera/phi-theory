@@ -25,6 +25,16 @@ The prediction registry contains numerical spectral-overlap scores, Ω-band endp
 4. The statuses untested, undecided, and blocked are not interchangeable. Use blocked in planning documents when essential model specification is absent; do not claim empirical confirmation or falsification.
 5. Do not replace unsupported values with new guessed values. Preserve their provenance and label them as provisional or unsupported until a derivation exists.
 
+## Workflow status and readiness gate are separate dimensions
+
+The registry's existing `status` field records the workflow/assessment label; it is not a substitute for the prediction-readiness gate. In particular, a registry entry marked `undecided` can still be **blocked for confirmatory use**. The readiness gate in `prediction_readiness_gate.md` tracks whether the derivation, operational observable, baseline, uncertainty treatment, decision rule, and provenance requirements are satisfied. These dimensions answer different questions:
+
+- **Assessment/workflow status:** has an empirical or review outcome been recorded?
+- **Readiness gate:** is there enough specified and reviewable evidence to design or conduct a confirmatory test?
+- **Software validation:** do tests support that the implementation behaves as intended?
+
+Never infer readiness from an `undecided` or `untested` status, and never infer empirical truth from a gate transition or passing CI. Keep P1–P6 blocked for confirmatory use until their applicable readiness criteria are supported by evidence.
+
 ## Registry schema additions (version 1.2.0)
 
 The registry now records the provenance and operational readiness of each P1–P6 entry using these fields:
