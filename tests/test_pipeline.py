@@ -19,6 +19,32 @@ from analysis.feedback import load_predictions, apply_feedback, summary
 from analysis.predictions import save_predictions as save_prediction_records
 
 
+
+def test_explicit_spectrum_validates_inputs_and_stabilizes_weights():
+    from core.spectrum import compute_spectrum_explicit
+
+    H = np.diag([1.0, 2.0])
+    omega, weights = compute_spectrum_explicit(H, np.array([1e308, 1e308]))
+    assert np.all(np.isfinite(omega))
+    assert np.all(np.isfinite(weights))
+    assert abs(float(np.sum(weights)) - 1.0) < 1e-12
+
+    _, zero_weights = compute_spectrum_explicit(H, np.zeros(2))
+    assert np.all(zero_weights == 0.0)
+
+    invalid_cases = [
+        (np.ones((2, 3)), np.ones(2), 1.0, "non-empty square"),
+        (np.array([[1.0, 2.0], [0.0, 1.0]]), np.ones(2), 1.0, "Hermitian"),
+        (H, np.ones((2, 1)), 1.0, "one-dimensional vector"),
+        (H, np.array([1.0, np.inf]), 1.0, "psi0 values must be finite"),
+        (H, np.ones(2), 0.0, "hbar must be finite"),
+        (H, np.ones(2), np.inf, "hbar must be finite"),
+        (H, np.ones(2), 1e-320, "computed frequencies must be finite"),
+    ]
+    for matrix, state, hbar, message in invalid_cases:
+        with np.testing.assert_raises_regex(ValueError, message):
+            compute_spectrum_explicit(matrix, state, hbar=hbar)
+
 def test_normalize_spectrum_nonuniform_grid():
     omega = np.logspace(-3, 2, 500)
     spectrum = np.exp(-((np.log10(omega) - 0.2) ** 2)) + 0j
