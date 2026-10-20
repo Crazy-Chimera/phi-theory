@@ -124,13 +124,15 @@ def build_spectrum_from_descriptor(
     weights = weights / np.sum(weights)
 
     if omega_grid is None:
-        if n_samples < 2:
-            raise ValueError("n_samples must be at least 2")
+        if not isinstance(n_samples, (int, np.integer)) or isinstance(n_samples, bool) or n_samples < 2:
+            raise ValueError("n_samples must be an integer of at least 2")
         lo = max(centers.min() / 100, 1e-14)
         hi = centers.max() * 100
         omega_grid = np.logspace(np.log10(lo), np.log10(hi), n_samples)
     else:
         omega_grid = np.asarray(omega_grid, dtype=float)
+        if omega_grid.ndim != 1 or len(omega_grid) < 2:
+            raise ValueError("omega_grid must be one-dimensional with at least two points")
         _validate_grid(omega_grid)
         if np.any(omega_grid <= 0):
             raise ValueError("omega_grid values must be positive for logarithmic descriptors")
