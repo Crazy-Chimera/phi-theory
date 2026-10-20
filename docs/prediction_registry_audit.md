@@ -1,0 +1,34 @@
+# Prediction registry audit (P1–P6)
+
+**Status: documentary audit of the current registry, not an independent experimental review.** This document separates stored numerical entries from predictions that can presently be derived from the documented Phi-Theory equations.
+
+## Executive finding
+
+The prediction registry contains numerical spectral-overlap scores, Ω-band endpoints, deviation targets, and falsification statements for P1–P6. The mathematical specification audit finds that the core field dynamics are not yet closed, the displayed master-equation ansatz is not derived from the displayed action, and the Ω-to-laboratory mapping is missing. Consequently, the registry's numerical scores and bands should be treated as outputs of the current qualitative descriptors and analysis conventions—not as empirical evidence or physical effect predictions.
+
+## Entry-by-entry status
+
+| ID | Stored target / topic | Current interpretation | Required before confirmatory use |
+|---|---|---|---|
+| P1 | ΔA/A_Planck = 0.01; Phi-Theory–LQG | Target is not derived from the documented equations; Planck-regime observable and dataset are not operationally specified. | Shared observable, complete model, derivation, data source, uncertainty and decision rule. |
+| P2 | ΔR = 0.05; mesoscopic quantum dynamics | Explicitly blocked. R is not operationally defined and Ω is not mapped to controls. | Follow docs/prediction_validation_P2.md and docs/experiment_P2_mesoscopic.md. |
+| P3 | Δy_f/y_f = 10⁻¹²; Phi-Theory–Standard Model | No interaction term or derivation connects Φ to a measurable Yukawa shift in the current specification. | Explicit coupling, observable, derivation, constraints, uncertainties and a feasible analysis plan. |
+| P4 | Δα/α = 10⁻¹⁵; Phi-Theory–QED | No derived Φ-dependent correction to α or the electron anomaly is specified. The stored falsification threshold also needs a consistent derivation and sensitivity argument. | Explicit correction model, units/scale dependence, independent bounds, calibration and statistical design. |
+| P5 | ΔG/G = 10⁻¹⁰; Phi-Theory–GR | G(Φ) is asserted as a possibility but no functional form or derived constraint is provided. The stated falsification threshold is not shown to follow from the model. | Full gravity-plus-scalar action, field equations, parameter constraints and a defined Φ proxy. |
+| P6 | ΔS_classical = 0.1; classical–quantum boundary | Observable and target are not operationally defined; a zero spectral score is an algorithmic descriptor, not evidence of absence of a physical effect. | Definition of S, model-derived prediction, platform-specific baseline and a falsifiable decision rule. |
+
+## Interpretation rules
+
+1. A stored number is not a prediction merely because it appears in YAML or is consumed by code.
+2. A spectral overlap score computed from chosen descriptors is a property of those descriptors and the algorithm. It is not a probability, confidence level, or measured resonance.
+3. A falsification statement is not operational unless the alternative predicts a defined observable with a quantified effect or distribution and the experiment can exclude it at a stated level.
+4. The statuses untested, undecided, and blocked are not interchangeable. Use blocked in planning documents when essential model specification is absent; do not claim empirical confirmation or falsification.
+5. Do not replace unsupported values with new guessed values. Preserve their provenance and label them as provisional or unsupported until a derivation exists.
+
+## Recommended registry hygiene
+
+For future changes, add per-prediction fields such as prediction_basis, observable_definition, derivation_reference, lab_mapping_reference, and status_reason. Keep existing numerical values only if clearly labelled as provisional bookkeeping inputs rather than derived physical forecasts. Avoid silently changing schema until the repository's code and validation tests are updated to support it.
+
+## Scope
+
+This audit is based on the repository's current registry and mathematical specification. It does not establish that Phi-Theory is true or false, nor does it replace a literature review or independent domain-expert assessment.
