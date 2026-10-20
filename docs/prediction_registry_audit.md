@@ -32,3 +32,16 @@ For future changes, add per-prediction fields such as prediction_basis, observab
 ## Scope
 
 This audit is based on the repository's current registry and mathematical specification. It does not establish that Phi-Theory is true or false, nor does it replace a literature review or independent domain-expert assessment.
+
+## Feedback status is workflow metadata, not scientific validation
+
+The feedback API requires an `evidence_reference` when a caller sets a prediction to `confirmed` or `falsified`. The reference is retained in feedback and resonance-log records to improve traceability. This is a provenance guardrail only:
+
+- The software checks that a reference is present; it does not validate that the reference resolves, that its contents are immutable, or that the referenced material is scientifically adequate.
+- A URL, fixture URI, file path, or other pointer is not itself evidence that a prediction is true or false.
+- The status label records a workflow decision made by a caller. It must not be presented as an automated scientific conclusion.
+- A responsible status change should point to the preregistration, dataset, analysis/code version, primary result, uncertainty, and decision rule that supports the assessment. Independent review and reproducibility remain necessary.
+- Dry-run tests and synthetic fixture references validate software behaviour only; they are not empirical evidence.
+
+Do not strengthen this check into a claim of scientific verification unless a separate, explicit evidence-review process is defined and implemented. The API's reference requirement intentionally does not infer evidence quality from a nonempty string.
+
