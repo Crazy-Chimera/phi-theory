@@ -7,7 +7,7 @@ theories:
   author: Michael Chodounsky
   status: speculative
   equations:
-  - 'Scalar Euler-Lagrange equation implied by the displayed Phi-only action, with matter source J_m := delta S_m/delta Phi: Box Phi + dV/dPhi - lambda dC/dPhi = J_m. This form assumes boundary variations vanish and the displayed kinetic-term convention; it is not the full master equation unless all other source terms are derived from a specified action.'
+  - 'Scalar Euler-Lagrange equation implied by the displayed Phi-only action, with matter source J_m := (1/sqrt(-g)) delta S_m/delta Phi: Box Phi + dV/dPhi - lambda dC/dPhi = J_m. This source convention assumes the functional derivative is defined with respect to the coordinate measure d^4x; conventions must be stated consistently. This form assumes boundary variations vanish and the displayed kinetic-term convention; it is not the full master equation unless all other source terms are derived from a specified action.'
   - 'Master-equation ansatz (schematic, not yet derived or dimensionally closed): Box Phi + Lambda(Phi) = (8 pi G(Phi)/c^4) T(C)_munu g^munu + gamma C(Phi) + eta P-hat(Phi). Its source terms are not shown to follow from the displayed action; definitions, units, and couplings remain unspecified.'
   - 'Elegance: E = C/K'
   - 'Action: S[Phi] = integral d^4x sqrt(-g) [(1/2) g^munu grad Phi grad Phi - V(Phi) + lambda C(Phi)]'
