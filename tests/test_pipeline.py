@@ -210,6 +210,22 @@ def test_discrete_spectrum_rejects_invalid_inputs():
     with np.testing.assert_raises_regex(ValueError, "finite"):
         build_discrete_spectrum(np.array([0.0]), np.array([1.0]), np.array([0.0, np.nan]))
 
+    with np.testing.assert_raises_regex(ValueError, "positive sum"):
+        build_discrete_spectrum(np.array([0.0]), np.array([0.0]), grid)
+
+    huge_grid = np.array([1e200, 1e200 + 1e190, 1e200 + 2e190])
+    huge_spectrum = build_discrete_spectrum(
+        np.array([1e200]), np.array([1e308]), huge_grid, width=1e190
+    )
+    assert np.all(np.isfinite(huge_spectrum))
+    assert abs(float(trapezoid(np.abs(huge_spectrum) ** 2, x=huge_grid)) - 1.0) < 1e-10
+
+    balanced = build_discrete_spectrum(
+        np.array([-1.0, 1.0]), np.array([1e308, 1e308]), grid, width=0.05
+    )
+    assert np.all(np.isfinite(balanced))
+    assert abs(float(trapezoid(np.abs(balanced) ** 2, x=grid)) - 1.0) < 1e-10
+
 
 def test_discrete_spectrum_normalizes_valid_inputs():
     grid = np.linspace(-5.0, 5.0, 1001)
