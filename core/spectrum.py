@@ -120,10 +120,31 @@ def build_discrete_spectrum(
     if omega_grid.ndim != 1 or len(omega_grid) < 2:
         raise ValueError("omega_grid must be one-dimensional with at least two points")
     _validate_grid(omega_grid)
-    S = np.zeros_like(omega_grid, dtype=complex)
-    for w, a in zip(omega_n, amplitudes):
-        S += a / ((omega_grid - w) ** 2 + width**2)
-    return normalize_spectrum(S, omega_grid)
+
+    # Scale before summing so large finite amplitudes cannot overflow. A zero
+    # total carries no spectral information and must not masquerade as a
+    # successfully normalized spectrum.
+    amplitude_scale = float(np.max(amplitudes))
+    if amplitude_scale <= 0:
+        raise ValueError("amplitudes must have a positive sum")
+    scaled_amplitudes = amplitudes / amplitude_scale
+    scaled_total = float(np.sum(scaled_amplitudes))
+    if not np.isfinite(scaled_total) or scaled_total <= 0:
+        raise ValueError("amplitudes must have a finite positive sum")
+    scaled_amplitudes = scaled_amplitudes / scaled_total
+
+    # The common width^2 factor cancels during final normalization. Evaluating
+    # 1 / (1 + (delta / width)^2) avoids squaring large frequencies or widths.
+    S = np.zeros_like(omega_grid, dtype=float)
+    with np.errstate(over="ignore", under="ignore", invalid="ignore", divide="ignore"):
+        for w, a in zip(omega_n, scaled_amplitudes):
+            delta = omega_grid - w
+            ratio = delta / width
+            profile = 1.0 / (1.0 + ratio * ratio)
+            S += a * profile
+    if not np.all(np.isfinite(S)) or not np.any(S > 0):
+        raise ValueError("discrete spectrum is not representable on omega_grid")
+    return normalize_spectrum(S.astype(complex), omega_grid)
 
 
 def build_spectrum_from_descriptor(
