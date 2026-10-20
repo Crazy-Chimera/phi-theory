@@ -52,6 +52,50 @@ def analyze_kernel(
     }
 
 
+
+def local_overlap_profile(
+    S1: np.ndarray,
+    S2: np.ndarray,
+    omega: np.ndarray,
+    smoothing_window: int = 31,
+) -> np.ndarray:
+    """
+    Return a peak-normalized local spectral-overlap profile for band finding.
+
+    This is a descriptive, pointwise profile, not the global integrated
+    resonance score returned by core.resonance.compute_resonance. The window
+    is applied on the supplied sample grid (normally uniform in log-frequency).
+    """
+    S1 = np.asarray(S1)
+    S2 = np.asarray(S2)
+    omega = np.asarray(omega, dtype=float)
+    if S1.ndim != 1 or S2.ndim != 1 or omega.ndim != 1:
+        raise ValueError("S1, S2, and omega must be one-dimensional")
+    if not (len(S1) == len(S2) == len(omega)):
+        raise ValueError("S1, S2, and omega must have equal lengths")
+    if len(omega) == 0:
+        return np.array([], dtype=float)
+    if len(omega) > 1 and not np.all(np.diff(omega) > 0):
+        raise ValueError("omega must be strictly increasing")
+    if smoothing_window < 1:
+        raise ValueError("smoothing_window must be positive")
+
+    profile = np.abs(S1 * np.conj(S2)).astype(float)
+    window = min(int(smoothing_window), len(profile))
+    if window > 1:
+        if window % 2 == 0:
+            window -= 1
+        if window > 1:
+            kernel = np.ones(window, dtype=float) / window
+            profile = np.convolve(profile, kernel, mode="same")
+    maximum = float(np.max(profile))
+    if maximum > 0 and np.isfinite(maximum):
+        profile = profile / maximum
+    else:
+        profile = np.zeros_like(profile)
+    return profile
+
+
 def identify_bands(
     omega: np.ndarray,
     R: np.ndarray,
