@@ -7,6 +7,8 @@ Statuses: untested | confirmed | falsified | undecided
 from __future__ import annotations
 
 from pathlib import Path
+import base64
+import json
 import os
 import tempfile
 from typing import Dict, List, Optional, Any
@@ -71,6 +73,10 @@ def apply_feedback(
             "a status label alone is not experimental evidence"
         )
 
+    # Recover an interrupted paired write before reading either file. Dry runs
+    # are read-only and therefore do not trigger recovery writes.
+    if not dry_run:
+        _recover_interrupted_feedback()
     # Work on a detached copy so a dry run never mutates shared in-memory data.
     data = copy.deepcopy(load_predictions())
     prediction = find_prediction(pred_id, data)
@@ -156,6 +162,47 @@ def _atomic_write_bytes(path: Path, payload: bytes) -> None:
         temp_path.unlink(missing_ok=True)
 
 
+
+def _feedback_journal_path() -> Path:
+    return PREDICTIONS_PATH.parent / ".feedback-transaction.json"
+
+
+def _write_journal(path: Path, payload: bytes) -> None:
+    """Atomically publish a recovery journal before replacing either registry."""
+    temp_path = _stage_bytes(path, payload)
+    try:
+        os.replace(temp_path, path)
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
+def _recover_interrupted_feedback() -> None:
+    """Roll back a transaction left incomplete by process interruption.
+
+    The journal is retained until both original file states are restored, so
+    recovery can be retried if a restoration step itself fails.
+    """
+    journal_path = _feedback_journal_path()
+    if not journal_path.exists():
+        return
+    journal = json.loads(journal_path.read_text(encoding="utf-8"))
+    if journal.get("version") != 1:
+        raise RuntimeError("unsupported feedback transaction journal version")
+    snapshots = journal.get("originals")
+    if not isinstance(snapshots, dict) or set(snapshots) != {"predictions", "resonances"}:
+        raise RuntimeError("invalid feedback transaction journal")
+    targets = {
+        "predictions": PREDICTIONS_PATH,
+        "resonances": RESONANCES_PATH,
+    }
+    for key, target in targets.items():
+        encoded = snapshots[key]
+        if encoded is None:
+            target.unlink(missing_ok=True)
+        else:
+            _atomic_write_bytes(target, base64.b64decode(encoded, validate=True))
+    journal_path.unlink()
+
 def _persist_feedback_pair(
     predictions: Dict[str, Any], resonances: Dict[str, Any]
 ) -> None:
@@ -174,11 +221,36 @@ def _persist_feedback_pair(
     ).encode("utf-8")
 
     original_prediction = prediction_path.read_bytes() if prediction_path.exists() else None
+    original_resonance = resonance_path.read_bytes() if resonance_path.exists() else None
     staged_prediction = _stage_bytes(prediction_path, prediction_payload)
     try:
         staged_resonance = _stage_bytes(resonance_path, resonance_payload)
     except BaseException:
         staged_prediction.unlink(missing_ok=True)
+        raise
+
+    journal = {
+        "version": 1,
+        "originals": {
+            "predictions": (
+                base64.b64encode(original_prediction).decode("ascii")
+                if original_prediction is not None else None
+            ),
+            "resonances": (
+                base64.b64encode(original_resonance).decode("ascii")
+                if original_resonance is not None else None
+            ),
+        },
+    }
+    journal_path = _feedback_journal_path()
+    try:
+        _write_journal(
+            journal_path,
+            json.dumps(journal, sort_keys=True).encode("utf-8"),
+        )
+    except BaseException:
+        staged_prediction.unlink(missing_ok=True)
+        staged_resonance.unlink(missing_ok=True)
         raise
 
     prediction_replaced = False
@@ -189,15 +261,16 @@ def _persist_feedback_pair(
     except BaseException:
         if prediction_replaced:
             try:
-                if original_prediction is None:
-                    prediction_path.unlink(missing_ok=True)
-                else:
-                    _atomic_write_bytes(prediction_path, original_prediction)
+                _recover_interrupted_feedback()
             except BaseException as rollback_error:
                 raise RuntimeError(
-                    "feedback persistence failed and prediction-registry rollback also failed"
+                    "feedback persistence failed and transaction recovery also failed"
                 ) from rollback_error
+        else:
+            journal_path.unlink(missing_ok=True)
         raise
+    else:
+        journal_path.unlink(missing_ok=True)
     finally:
         staged_prediction.unlink(missing_ok=True)
         staged_resonance.unlink(missing_ok=True)
