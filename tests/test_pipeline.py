@@ -107,6 +107,21 @@ def test_dry_run_does_not_write_files():
     assert (resonances_path.read_bytes() if resonances_path.exists() else None) == before_resonances
 
 
+
+def test_feedback_status_does_not_change_spectral_band_values():
+    prediction = load_predictions()["predictions"][0]
+    original_band = dict(prediction.get("band", {}))
+
+    result = apply_feedback(
+        prediction["id"],
+        "confirmed",
+        note="workflow status must not rescale model output",
+        dry_run=True,
+    )
+
+    assert result.get("band", {}) == original_band
+
+
 def test_predictions_load_and_dry_run():
     data = load_predictions()
     predictions = data.get("predictions", [])
