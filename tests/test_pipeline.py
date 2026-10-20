@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import numpy as np
+from scipy.integrate import trapezoid
 import yaml
 import analysis.feedback as feedback_module
 from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor
@@ -21,7 +22,7 @@ def test_normalize_spectrum_nonuniform_grid():
     omega = np.logspace(-3, 2, 500)
     spectrum = np.exp(-((np.log10(omega) - 0.2) ** 2)) + 0j
     normalized = normalize_spectrum(spectrum, omega)
-    norm = np.trapezoid(np.abs(normalized) ** 2, x=omega)
+    norm = trapezoid(np.abs(normalized) ** 2, x=omega)
     assert abs(norm - 1.0) < 1e-10
 
 
