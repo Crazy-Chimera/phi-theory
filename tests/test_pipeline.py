@@ -320,6 +320,34 @@ def test_feedback_rolls_back_registry_if_resonance_replace_fails(
     assert not [path for path in tmp_path.iterdir() if path.name.endswith(".tmp")]
 
 
+
+def test_feedback_journal_recovers_interrupted_pair_write(tmp_path, monkeypatch):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    journal_path = tmp_path / ".feedback-transaction.json"
+    original_predictions = b"version: test\\npredictions: []\\n"
+    predictions_path.write_bytes(b"partially-updated registry")
+    resonances_path.write_bytes(b"partially-updated log")
+    journal = {
+        "version": 1,
+        "originals": {
+            "predictions": feedback_module.base64.b64encode(original_predictions).decode("ascii"),
+            "resonances": None,
+        },
+    }
+    journal_path.write_text(
+        feedback_module.json.dumps(journal),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    feedback_module._recover_interrupted_feedback()
+
+    assert predictions_path.read_bytes() == original_predictions
+    assert not resonances_path.exists()
+    assert not journal_path.exists()
+
 def test_feedback_staging_failure_leaves_both_files_unchanged(tmp_path, monkeypatch):
     predictions_path = tmp_path / "predictions.yaml"
     resonances_path = tmp_path / "resonances.yaml"
