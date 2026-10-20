@@ -55,6 +55,12 @@ def test_resonance_rejects_nonfinite_inputs():
         interpolate_to_grid(np.array([1.0, 2.0]), np.ones(2), np.array([1.0, np.inf]))
 
 
+def test_resonance_handles_overflowing_intermediates():
+    omega = np.array([1.0, 2.0])
+    extreme = np.array([1e200, 1e200])
+    assert compute_resonance(extreme, extreme, omega) == 0.0
+
+
 
 def test_normalize_spectrum_rejects_nonfinite_inputs():
     with np.testing.assert_raises_regex(ValueError, "S values must be finite"):
