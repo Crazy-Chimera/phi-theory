@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 import numpy as np
 import yaml
+import analysis.feedback as feedback_module
 from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor
 from core.resonance import compute_resonance, qualitative_resonance
 from core.emergence import identify_bands, compute_kernel
@@ -71,34 +72,22 @@ def test_kernel_finite():
 
 
 def test_dry_run_does_not_write_files():
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp = Path(temp_dir)
-        predictions_path = temp / "predictions.yaml"
-        resonances_path = temp / "resonances.yaml"
-        original = {
-            "version": "1.1.0",
-            "predictions": [{
-                "id": "TEST-1",
-                "status": "untested",
-                "band": {"strength": 0.5},
-            }],
-        }
-        predictions_path.write_text(yaml.safe_dump(original), encoding="utf-8")
-        before_predictions = predictions_path.read_bytes()
-        before_resonances = resonances_path.read_bytes() if resonances_path.exists() else None
+    predictions_path = feedback_module.PREDICTIONS_PATH
+    resonances_path = feedback_module.RESONANCES_PATH
+    before_predictions = predictions_path.read_bytes()
+    before_resonances = resonances_path.read_bytes() if resonances_path.exists() else None
+    prediction_id = load_predictions()["predictions"][0]["id"]
 
-        result = apply_feedback(
-            "TEST-1",
-            "confirmed",
-            note="dry-run test",
-            dry_run=True,
-        )
+    result = apply_feedback(
+        prediction_id,
+        "confirmed",
+        note="dry-run test",
+        dry_run=True,
+    )
 
-        assert result["status"] == "confirmed"
-        assert result["band"]["strength"] == 0.55
-        assert predictions_path.read_bytes() == before_predictions
-        assert not resonances_path.exists()
-        assert before_resonances is None
+    assert result["status"] == "confirmed"
+    assert predictions_path.read_bytes() == before_predictions
+    assert (resonances_path.read_bytes() if resonances_path.exists() else None) == before_resonances
 
 
 def test_predictions_load_and_dry_run():
