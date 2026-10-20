@@ -44,6 +44,16 @@ def test_resonance_rejects_invalid_grids():
         normalize_spectrum(np.ones(3), np.array([1.0, 3.0, 2.0]))
 
 
+
+def test_normalize_spectrum_rejects_nonfinite_inputs():
+    with np.testing.assert_raises_regex(ValueError, "S values must be finite"):
+        normalize_spectrum(np.array([1.0, np.nan]), np.array([1.0, 2.0]))
+    with np.testing.assert_raises_regex(ValueError, "omega values must be finite"):
+        normalize_spectrum(np.array([1.0, 1.0]), np.array([1.0, np.inf]))
+    with np.testing.assert_raises_regex(ValueError, "spectrum norm must be finite"):
+        normalize_spectrum(np.array([1e308, 1e308]), np.array([1.0, 2.0]))
+
+
 def test_build_descriptor_and_resonance():
     descriptor = {
         "peak_centers": [0.001, 0.01],
