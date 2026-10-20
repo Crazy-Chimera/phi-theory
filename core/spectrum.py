@@ -45,16 +45,44 @@ def compute_spectrum_explicit(
     psi0: np.ndarray,
     hbar: float = 1.0,
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Compute discrete spectral weights from a Hermitian Hamiltonian."""
-    if hbar == 0:
-        raise ValueError("hbar must be non-zero")
+    """Compute normalized discrete spectral weights from a Hermitian Hamiltonian."""
+    H = np.asarray(H)
+    psi0 = np.asarray(psi0)
+    if H.ndim != 2 or H.shape[0] == 0 or H.shape[0] != H.shape[1]:
+        raise ValueError("H must be a non-empty square matrix")
+    if not np.all(np.isfinite(H)):
+        raise ValueError("H values must be finite")
+    if not np.allclose(H, H.conj().T):
+        raise ValueError("H must be Hermitian")
+    if psi0.ndim != 1 or len(psi0) != H.shape[0]:
+        raise ValueError("psi0 must be a one-dimensional vector matching H")
+    if not np.all(np.isfinite(psi0)):
+        raise ValueError("psi0 values must be finite")
+    if not np.isscalar(hbar) or not np.isreal(hbar) or not np.isfinite(hbar) or hbar == 0:
+        raise ValueError("hbar must be finite, real, and non-zero")
+
     eigenvalues, eigenvectors = np.linalg.eigh(H)
-    omega = eigenvalues / hbar
-    coeffs = eigenvectors.conj().T @ psi0
-    amplitudes = np.abs(coeffs) ** 2
-    total = np.sum(amplitudes)
-    if total > 0:
-        amplitudes = amplitudes / total
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        omega = eigenvalues / hbar
+    if not np.all(np.isfinite(omega)):
+        raise ValueError("computed frequencies must be finite")
+
+    # Scale the state before projection and the coefficients before squaring.
+    # This preserves normalized weights while avoiding overflow for large states.
+    state_scale = float(np.max(np.abs(psi0)))
+    if state_scale == 0:
+        return omega, np.zeros_like(eigenvalues, dtype=float)
+    scaled_state = psi0 / state_scale
+    coeffs = eigenvectors.conj().T @ scaled_state
+    coeff_scale = float(np.max(np.abs(coeffs)))
+    if coeff_scale == 0:
+        return omega, np.zeros_like(eigenvalues, dtype=float)
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        scaled_amplitudes = np.abs(coeffs / coeff_scale) ** 2
+        total = float(np.sum(scaled_amplitudes))
+    if not np.isfinite(total) or total <= 0:
+        raise ValueError("computed spectral weights must have a finite positive sum")
+    amplitudes = scaled_amplitudes / total
     return omega, amplitudes
 
 
