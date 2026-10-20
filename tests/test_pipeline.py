@@ -45,6 +45,14 @@ def test_explicit_spectrum_validates_inputs_and_stabilizes_weights():
         with np.testing.assert_raises_regex(ValueError, message):
             compute_spectrum_explicit(matrix, state, hbar=hbar)
 
+def test_normalize_spectrum_scales_extreme_finite_values():
+    omega = np.linspace(0.0, 1.0, 101)
+    for scale in (1e308, 1e-308):
+        spectrum = normalize_spectrum(np.full(omega.shape, scale, dtype=complex), omega)
+        assert np.all(np.isfinite(spectrum))
+        assert abs(float(trapezoid(np.abs(spectrum) ** 2, x=omega)) - 1.0) < 1e-12
+
+
 def test_normalize_spectrum_nonuniform_grid():
     omega = np.logspace(-3, 2, 500)
     spectrum = np.exp(-((np.log10(omega) - 0.2) ** 2)) + 0j
