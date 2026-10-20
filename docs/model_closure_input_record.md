@@ -4,16 +4,32 @@
 
 **Status:** template only. No new physical assumptions or parameter values are introduced.
 
+## Verified repository evidence (not author confirmation)
+
+This inventory records what is explicitly written in the repository. It does **not** promote notation or a conditional calculation into an author-approved physical convention.
+
+| Item | What the current text establishes | What it does not establish | Closure status |
+|---|---|---|---|
+| Integration measure | The displayed scalar action is written with `d^4x\sqrt{-g}). | Whether four spacetime coordinates are the intended physical model choice, the coordinate units, or whether an overall dimensional prefactor is omitted. | Author confirmation required |
+| Scalar-sector expression | The written expression is \(S_\Phi=\int d^4x\sqrt{-g}[\tfrac12 g^{\mu\nu}\nabla_\mu\Phi\nabla_\nu\Phi-V(\Phi)+\lambda C(\Phi)]\). | A complete action including gravitational, matter, and any additional/operator sectors. | Partial expression only |
+| Conditional scalar variation | Under fixed metric during scalar variation, vanishing boundary variations, and \(J_m=(1/\sqrt{-g})\delta S_m/\delta\Phi\), the recorded result is \(\Box\Phi+V'(\Phi)-\lambda C'(\Phi)=J_m\). | The signature, precise definition of \(\Box\), matter-action dependence, or derivation of the separate master-equation terms. | Conditional result only |
+| Master-equation ansatz | The repository records \(\Box\Phi+\Lambda(\Phi)=(8\pi G(\Phi)/c^4)T(C)_{\mu\nu}g^{\mu\nu}+\gamma C(\Phi)+\eta\hat P(\Phi)\). | Definitions, units, or derivation of every term and its relation to the displayed scalar action. | Unclosed ansatz |
+| Omega definition | The registry/audits record \(\Omega=\Phi^{-1}d\Phi/dt\). | Operational meaning of \(t\), a laboratory mapping, and a reference scale if a dimensionless quantity is intended. | Definition incomplete for experiment |
+| Independent variations | The conditional scalar calculation treats the metric as fixed during variation. | Whether the metric, matter fields, and auxiliary/operator fields are independent variables in the full theory. | Unresolved |
+| Parameter provenance | The registry explicitly labels its descriptor scores and deviation targets provisional/unsupported as physical predictions. | Independent derivation or empirical provenance for the couplings and prediction targets. | Unresolved |
+
+No reviewed repository record supplies author-confirmed choices for spacetime dimension, signature, curvature convention, units, full action, or complete field/coupling definitions. These remain open inputs; they must not be inferred from common practice or selected merely to make the equations calculable.
+
 ## A. Convention freeze
 
 | Item | Author-specified choice | Source / rationale | Status |
 |---|---|---|---|
-| Spacetime dimension | [fill in] | [reference or rationale] | unresolved |
+| Spacetime dimension | [author confirmation required] | The displayed measure is written as `d^4x`; this is evidence about the notation, not confirmation of the intended physical dimension. | unresolved |
 | Metric signature | [fill in] | [reference or rationale] | unresolved |
 | Curvature convention | [fill in] | [reference or rationale] | unresolved |
 | Definition of \(\Box\) | [fill in] | [reference or rationale] | unresolved |
 | Unit system; treatment of \(c,\hbar\) | [fill in] | [reference or rationale] | unresolved |
-| Integration measure and coordinates | [fill in] | [reference or rationale] | unresolved |
+| Integration measure and coordinates | [author confirmation required] | The scalar action is written with `d^4x√(-g)`; coordinate dimensions and any omitted overall prefactor are not specified. | unresolved |
 | Boundary conditions | [fill in] | [reference or rationale] | unresolved |
 | Independent fields varied | [fill in] | [reference or rationale] | unresolved |
 
