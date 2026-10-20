@@ -17,8 +17,22 @@ def compute_kernel(
     S2: np.ndarray,
     eps: float = 1e-10,
 ) -> np.ndarray:
-    """Compute emergent kernel K = S2 / S1 with protection against division by zero."""
-    return S2 / (S1 + eps)
+    """Compute emergent kernel K = S2 / (S1 + eps) after validating inputs."""
+    S1 = np.asarray(S1)
+    S2 = np.asarray(S2)
+    if S1.ndim != 1 or S2.ndim != 1:
+        raise ValueError("S1 and S2 must be one-dimensional")
+    if len(S1) != len(S2):
+        raise ValueError("S1 and S2 must have equal lengths")
+    if not np.all(np.isfinite(S1)) or not np.all(np.isfinite(S2)):
+        raise ValueError("S1 and S2 values must be finite")
+    if not np.isscalar(eps) or not np.isfinite(eps) or eps <= 0:
+        raise ValueError("eps must be finite and positive")
+    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+        kernel = S2 / (S1 + eps)
+    if not np.all(np.isfinite(kernel)):
+        raise ValueError("computed kernel contains non-finite values")
+    return kernel
 
 
 def analyze_kernel(
@@ -33,6 +47,23 @@ def analyze_kernel(
     Returns:
         dict with keys: peaks, zeros, max, min
     """
+    K = np.asarray(K)
+    omega = np.asarray(omega, dtype=float)
+    if K.ndim != 1 or omega.ndim != 1:
+        raise ValueError("K and omega must be one-dimensional")
+    if len(K) != len(omega):
+        raise ValueError("K and omega must have equal lengths")
+    if not np.all(np.isfinite(K)) or not np.all(np.isfinite(omega)):
+        raise ValueError("K and omega values must be finite")
+    if len(omega) and np.any(omega <= 0):
+        raise ValueError("omega values must be positive")
+    if len(omega) > 1 and not np.all(np.diff(omega) > 0):
+        raise ValueError("omega must be strictly increasing")
+    if not np.isfinite(peak_height) or not np.isfinite(zero_threshold):
+        raise ValueError("peak_height and zero_threshold must be finite")
+    if peak_height < 0 or zero_threshold < 0:
+        raise ValueError("peak_height and zero_threshold must be non-negative")
+
     abs_K = np.abs(K)
     peaks, _ = find_peaks(abs_K, height=peak_height)
     peak_list = [
