@@ -320,6 +320,49 @@ def test_feedback_rolls_back_registry_if_resonance_replace_fails(
     assert not [path for path in tmp_path.iterdir() if path.name.endswith(".tmp")]
 
 
+def test_feedback_staging_failure_leaves_both_files_unchanged(tmp_path, monkeypatch):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    predictions_path.write_text(
+        yaml.safe_dump({
+            "version": "test",
+            "predictions": [{"id": "P-test", "status": "undecided"}],
+        }),
+        encoding="utf-8",
+    )
+    resonances_path.write_text(
+        yaml.safe_dump({
+            "version": "test-log",
+            "entries": [{"prediction_id": "P-existing", "status": "untested"}],
+        }),
+        encoding="utf-8",
+    )
+    prediction_bytes = predictions_path.read_bytes()
+    resonance_bytes = resonances_path.read_bytes()
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    real_stage = feedback_module._stage_bytes
+
+    def fail_resonance_staging(path, payload):
+        if Path(path) == resonances_path:
+            raise OSError("simulated resonance-log staging failure")
+        return real_stage(path, payload)
+
+    monkeypatch.setattr(feedback_module, "_stage_bytes", fail_resonance_staging)
+
+    with np.testing.assert_raises_regex(OSError, "resonance-log staging failure"):
+        apply_feedback(
+            "P-test",
+            "confirmed",
+            evidence_reference="test-fixture://staging-failure",
+        )
+
+    assert predictions_path.read_bytes() == prediction_bytes
+    assert resonances_path.read_bytes() == resonance_bytes
+    assert not [path for path in tmp_path.iterdir() if path.name.endswith(".tmp")]
+
+
 def test_feedback_reports_rollback_failure_explicitly(tmp_path, monkeypatch):
     predictions_path = tmp_path / "predictions.yaml"
     resonances_path = tmp_path / "resonances.yaml"
