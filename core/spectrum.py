@@ -34,7 +34,13 @@ def normalize_spectrum(S: np.ndarray, omega: np.ndarray) -> np.ndarray:
         return S.copy()
     # Scale first: squaring large finite samples can overflow, while squaring
     # tiny samples can underflow to zero even when the normalized shape is valid.
-    scale = float(np.max(np.abs(S))) if len(S) else 0.0
+    # Use the largest component rather than abs(S): hypot-based complex
+    # magnitudes can overflow for finite real/imaginary components near float max.
+    scale = (
+        max(float(np.max(np.abs(S.real))), float(np.max(np.abs(S.imag))))
+        if len(S)
+        else 0.0
+    )
     if scale == 0:
         return S.copy()
     scaled = S / scale
