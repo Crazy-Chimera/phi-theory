@@ -100,6 +100,7 @@ def test_dry_run_does_not_write_files():
         "confirmed",
         note="dry-run test",
         dry_run=True,
+        evidence_reference="test-fixture://dry-run",
     )
 
     assert result["status"] == "confirmed"
@@ -117,6 +118,7 @@ def test_feedback_status_does_not_change_spectral_band_values():
         "confirmed",
         note="workflow status must not rescale model output",
         dry_run=True,
+        evidence_reference="test-fixture://no-band-mutation",
     )
 
     assert result.get("band", {}) == original_band
@@ -128,9 +130,25 @@ def test_predictions_load_and_dry_run():
     assert predictions, "Expected at least one registered prediction"
     prediction_id = predictions[0]["id"]
     before = summary()
-    apply_feedback(prediction_id, "confirmed", note="test", dry_run=True)
+    apply_feedback(prediction_id, "undecided", note="test", dry_run=True)
     assert summary() == before
 
+
+
+
+def test_confirmation_and_falsification_require_evidence_reference():
+    prediction_id = load_predictions()["predictions"][0]["id"]
+    for status in ("confirmed", "falsified"):
+        with np.testing.assert_raises_regex(ValueError, "evidence_reference"):
+            apply_feedback(prediction_id, status, dry_run=True)
+
+        result = apply_feedback(
+            prediction_id,
+            status,
+            dry_run=True,
+            evidence_reference="test-fixture://evidence",
+        )
+        assert result["feedback"]["evidence_reference"] == "test-fixture://evidence"
 
 
 def test_prediction_save_preserves_registry_metadata():
