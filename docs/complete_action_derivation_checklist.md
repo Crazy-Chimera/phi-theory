@@ -92,6 +92,10 @@ An internal spectral overlap score is not a substitute for any of these steps.
 
 The master-equation ansatz should not be described as derived, closed, or quantitatively predictive until each term has a documented origin, the equations pass dimensional and consistency checks, and the observable calculation is reproducible. P1–P6 numerical targets remain provisional until they pass the prediction-specific gate in `prediction_registry_audit.md`. P2 remains blocked from confirmatory testing until its observable, laboratory mapping, derived effect, baseline/noise model, and preregistered decision rule are specified.
 
+## Working record template
+
+Use the [model-closure input record](model_closure_input_record.md) to collect explicit definitions, dimensions, action sectors, derivations, and unresolved closure tests in one fill-in worksheet. It is intentionally a blank template, not a proposed physical model.
+
 ## Relationship to other audits
 
 - [Mathematical specification audit](phi_theory_specification_audit.md)
