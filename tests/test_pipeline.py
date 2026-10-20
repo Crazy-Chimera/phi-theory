@@ -275,6 +275,51 @@ def test_malformed_resonance_log_does_not_partially_update_registry(tmp_path, mo
     assert yaml.safe_load(predictions_path.read_text(encoding="utf-8")) == original
 
 
+def test_feedback_rolls_back_registry_if_resonance_replace_fails(
+    tmp_path, monkeypatch
+):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    original_predictions = {
+        "version": "test",
+        "predictions": [{"id": "P-test", "status": "undecided"}],
+    }
+    original_resonances = {
+        "version": "test-log",
+        "entries": [{"prediction_id": "P-existing", "status": "untested"}],
+    }
+    predictions_path.write_text(
+        yaml.safe_dump(original_predictions), encoding="utf-8"
+    )
+    resonances_path.write_text(
+        yaml.safe_dump(original_resonances), encoding="utf-8"
+    )
+    prediction_bytes = predictions_path.read_bytes()
+    resonance_bytes = resonances_path.read_bytes()
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    real_replace = feedback_module.os.replace
+
+    def fail_resonance_replacement(source, destination):
+        if Path(destination) == resonances_path:
+            raise OSError("simulated resonance-log replacement failure")
+        return real_replace(source, destination)
+
+    monkeypatch.setattr(feedback_module.os, "replace", fail_resonance_replacement)
+
+    with np.testing.assert_raises_regex(OSError, "simulated resonance-log"):
+        apply_feedback(
+            "P-test",
+            "confirmed",
+            evidence_reference="test-fixture://replace-failure",
+        )
+
+    assert predictions_path.read_bytes() == prediction_bytes
+    assert resonances_path.read_bytes() == resonance_bytes
+    assert not list(tmp_path.glob("*.tmp"))
+
+
 if __name__ == "__main__":
     test_normalize_spectrum_nonuniform_grid()
     test_resonance_invariants_on_nonuniform_grid()
