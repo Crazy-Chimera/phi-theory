@@ -60,3 +60,7 @@ A non-dry-run `apply_feedback()` operation stages the prediction registry and re
 This is stronger than independent file replacement, but it is **not a demonstrated crash-atomic multi-file transaction**. The two YAML files remain separate filesystem objects; abrupt termination, power loss, filesystem or storage failures, and durability ordering around file and directory metadata have not been proven safe by a full durability protocol. The journal itself may not survive every hardware/filesystem failure. The test suite's failure-injection and interrupted-recovery tests validate the exercised software paths, not every possible crash state.
 
 After an exception indicating that recovery failed, inspect the journal and both YAML files before retrying. Do not assume either file changed or remained unchanged without checking. Dry-run mode avoids persistence writes, but does not validate filesystem durability. Passing tests and successful recovery are software reliability results only; they do not validate the theory or any prediction scientifically.
+
+## Operational acceptance gate
+
+Use [Prediction readiness gate](prediction_readiness_gate.md) for the shared acceptance criteria and prediction-specific evidence required before moving P1–P6 from blocked status toward design review, preregistration, testing, or independent reproduction. It is intended to make status transitions auditable; it does not replace the equation-level closure work or supply missing physical assumptions.
