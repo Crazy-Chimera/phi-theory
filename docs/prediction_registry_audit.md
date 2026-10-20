@@ -44,4 +44,8 @@ The feedback API requires an `evidence_reference` when a caller sets a predictio
 - Dry-run tests and synthetic fixture references validate software behaviour only; they are not empirical evidence.
 
 Do not strengthen this check into a claim of scientific verification unless a separate, explicit evidence-review process is defined and implemented. The API's reference requirement intentionally does not infer evidence quality from a nonempty string.
+## Feedback persistence and partial-failure limitation
 
+A non-dry-run call to `apply_feedback()` currently writes the prediction registry and then updates the resonance log as two separate filesystem operations. These YAML files do not share a transaction. If the registry write succeeds but the resonance-log update fails, the caller receives an exception even though the prediction status may already have changed; the two records can therefore temporarily disagree. A process or machine failure between the writes can produce the same partial update.
+
+Treat this as a known consistency limitation, not as an indication that the feedback was scientifically verified. After a persistence exception, inspect both files before retrying so a retry does not blindly duplicate a log entry. Dry-run mode avoids both writes, but it does not test filesystem durability. A stronger guarantee would require an explicit recovery/transaction design and failure-injection tests; atomic replacement of each file individually would not make the pair atomic.
