@@ -264,7 +264,7 @@ def _persist_feedback_pair(
                 _recover_interrupted_feedback()
             except BaseException as rollback_error:
                 raise RuntimeError(
-                    "feedback persistence failed and transaction recovery also failed"
+                    "feedback persistence failed and prediction-registry rollback also failed"
                 ) from rollback_error
         else:
             journal_path.unlink(missing_ok=True)
