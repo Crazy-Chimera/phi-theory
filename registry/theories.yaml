@@ -1,5 +1,5 @@
 version: 1.3.1
-updated: '2026-10-19'
+updated: '2026-10-20'
 sources_note: Constants and status cross-checked against CODATA, precision QED (g-2, alpha), Living Reviews GR (Will), LQG numerics 2024-2026, PDG-style SM, Phi Theory (Chodounsky 2026).
 theories:
 - name: Phi-Theory
@@ -7,7 +7,8 @@ theories:
   author: Michael Chodounsky
   status: speculative
   equations:
-  - 'Master equation: Box Phi + Lambda(Phi) = (8 pi G(Phi)/c^4) T(C)_munu g^munu + gamma C(Phi) + eta P-hat(Phi)'
+  - 'Scalar Euler-Lagrange equation implied by the displayed Phi-only action, with matter source J_m := delta S_m/delta Phi: Box Phi + dV/dPhi - lambda dC/dPhi = J_m. This form assumes boundary variations vanish and the displayed kinetic-term convention; it is not the full master equation unless all other source terms are derived from a specified action.'
+  - 'Master-equation ansatz (schematic, not yet derived or dimensionally closed): Box Phi + Lambda(Phi) = (8 pi G(Phi)/c^4) T(C)_munu g^munu + gamma C(Phi) + eta P-hat(Phi). Its source terms are not shown to follow from the displayed action; definitions, units, and couplings remain unspecified.'
   - 'Elegance: E = C/K'
   - 'Action: S[Phi] = integral d^4x sqrt(-g) [(1/2) g^munu grad Phi grad Phi - V(Phi) + lambda C(Phi)]'
   - 'Variational principle: delta S[Phi]/delta Phi = 0'
@@ -29,7 +30,7 @@ theories:
     peak_widths: [2.0, 1.5, 1.0]
     peak_weights: [0.3, 0.4, 0.3]
   characteristic_omega: broad
-  verification: Speculative framework (Chodounsky 2026). Not experimentally confirmed. Internal consistency recovers GR and QM limits from master equation.
+  verification: Speculative framework (Chodounsky 2026). Not experimentally confirmed. The displayed Phi-only action yields the scalar Euler-Lagrange equation recorded above under its stated assumptions; recovery of GR and QM limits from the schematic master equation has not been demonstrated here.
   relevance_to_phi: Core theory under test.
   core_idea: Everything that exists is a relationship. Nothing exists in isolation.
   field: Phi - real scalar field of local entanglement density
