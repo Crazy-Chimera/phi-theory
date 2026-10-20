@@ -174,6 +174,51 @@ def test_prediction_save_preserves_registry_metadata():
         assert saved["updated"] != original["updated"]
 
 
+def test_feedback_persists_provenance_without_changing_band(tmp_path, monkeypatch):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    original = {
+        "version": "test",
+        "custom_metadata": {"origin": "isolated test"},
+        "predictions": [
+            {
+                "id": "P-test",
+                "status": "undecided",
+                "band": {"low": 0.25, "high": 0.75},
+                "custom_field": "preserve me",
+            }
+        ],
+    }
+    predictions_path.write_text(
+        yaml.safe_dump(original, allow_unicode=True), encoding="utf-8"
+    )
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    reference = "test-fixture://persisted-provenance"
+    result = apply_feedback(
+        "P-test",
+        "confirmed",
+        note="isolated persistence test",
+        evidence_reference=reference,
+    )
+
+    saved_predictions = yaml.safe_load(predictions_path.read_text(encoding="utf-8"))
+    saved_prediction = saved_predictions["predictions"][0]
+    saved_log = yaml.safe_load(resonances_path.read_text(encoding="utf-8"))
+
+    assert result["status"] == "confirmed"
+    assert saved_prediction["status"] == "confirmed"
+    assert saved_prediction["feedback"]["evidence_reference"] == reference
+    assert saved_prediction["band"] == original["predictions"][0]["band"]
+    assert saved_prediction["custom_field"] == "preserve me"
+    assert saved_predictions["version"] == "test"
+    assert saved_predictions["custom_metadata"] == original["custom_metadata"]
+    assert saved_log["entries"][-1]["evidence_reference"] == reference
+    assert saved_log["entries"][-1]["prediction_id"] == "P-test"
+    assert saved_log["entries"][-1]["status"] == "confirmed"
+
+
 if __name__ == "__main__":
     test_normalize_spectrum_nonuniform_grid()
     test_resonance_invariants_on_nonuniform_grid()
