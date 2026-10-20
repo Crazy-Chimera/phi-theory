@@ -15,6 +15,8 @@ def _validate_grid(omega: np.ndarray) -> None:
     """Require a one-dimensional, strictly increasing integration grid."""
     if omega.ndim != 1:
         raise ValueError("omega must be a one-dimensional array")
+    if not np.all(np.isfinite(omega)):
+        raise ValueError("omega values must be finite")
     if len(omega) > 1 and not np.all(np.diff(omega) > 0):
         raise ValueError("omega must be strictly increasing")
 
@@ -70,8 +72,22 @@ def build_discrete_spectrum(
     width: float = 1e-6,
 ) -> np.ndarray:
     """Build a normalized spectrum from discrete Lorentzian peaks."""
-    if width <= 0:
-        raise ValueError("width must be positive")
+    omega_n = np.asarray(omega_n, dtype=float)
+    amplitudes = np.asarray(amplitudes, dtype=float)
+    omega_grid = np.asarray(omega_grid, dtype=float)
+    if not np.isfinite(width) or width <= 0:
+        raise ValueError("width must be finite and positive")
+    if omega_n.ndim != 1 or amplitudes.ndim != 1:
+        raise ValueError("omega_n and amplitudes must be one-dimensional")
+    if len(omega_n) == 0 or len(omega_n) != len(amplitudes):
+        raise ValueError("omega_n and amplitudes must have equal non-zero lengths")
+    if not np.all(np.isfinite(omega_n)):
+        raise ValueError("omega_n values must be finite")
+    if not np.all(np.isfinite(amplitudes)) or np.any(amplitudes < 0):
+        raise ValueError("amplitudes must be finite and non-negative")
+    if omega_grid.ndim != 1 or len(omega_grid) < 2:
+        raise ValueError("omega_grid must be one-dimensional with at least two points")
+    _validate_grid(omega_grid)
     S = np.zeros_like(omega_grid, dtype=complex)
     for w, a in zip(omega_n, amplitudes):
         S += a / ((omega_grid - w) ** 2 + width**2)
