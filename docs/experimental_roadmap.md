@@ -21,6 +21,6 @@
 
 ## P2 readiness gate
 
-P2 remains a **planning-stage hypothesis**, not a validated empirical prediction. The equation-level blockers are documented in [phi_theory_specification_audit.md](phi_theory_specification_audit.md). Its numerical ΔR target, Ω interval, sensitivity thresholds, and falsification criteria are not currently derived from the theory. See [prediction_validation_P2.md](prediction_validation_P2.md) and [experiment_P2_mesoscopic.md](experiment_P2_mesoscopic.md). Do not update P2 status based solely on its spectral overlap score or a band visualization.
+P2 remains a **planning-stage hypothesis**, not a validated empirical prediction. The equation-level blockers are documented in [phi_theory_specification_audit.md](phi_theory_specification_audit.md), and unsupported numerical targets across P1–P6 are catalogued in [prediction_registry_audit.md](prediction_registry_audit.md). Its numerical ΔR target, Ω interval, sensitivity thresholds, and falsification criteria are not currently derived from the theory. See [prediction_validation_P2.md](prediction_validation_P2.md) and [experiment_P2_mesoscopic.md](experiment_P2_mesoscopic.md). Do not update P2 status based solely on its spectral overlap score or a band visualization.
 
 *Roadmap v1.2 — experimental ranking and timing are provisional pending derivation.*
