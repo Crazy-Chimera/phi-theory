@@ -70,6 +70,16 @@ def test_invalid_descriptor_rejected():
         build_spectrum_from_descriptor(descriptor, n_samples=100)
 
 
+def test_descriptor_rejects_overflowing_weight_sum():
+    descriptor = {
+        "peak_centers": [1.0, 2.0],
+        "peak_widths": [0.5, 0.5],
+        "peak_weights": [1e308, 1e308],
+    }
+    with np.testing.assert_raises_regex(ValueError, "finite positive sum"):
+        build_spectrum_from_descriptor(descriptor, n_samples=100)
+
+
 def test_qualitative_and_bands():
     assert qualitative_resonance((1e-5, 1e-1), (1e-5, 1e-1)) > 0.5
     omega = np.logspace(-3, 1, 1000)
@@ -509,6 +519,7 @@ if __name__ == "__main__":
     test_resonance_rejects_invalid_grids()
     test_build_descriptor_and_resonance()
     test_invalid_descriptor_rejected()
+    test_descriptor_rejects_overflowing_weight_sum()
     test_qualitative_and_bands()
     test_local_overlap_profile_is_bounded_and_peak_normalized()
     test_kernel_finite()
