@@ -13,6 +13,7 @@ This checklist is a gate, not a claim that the missing ingredients have known an
 Record explicitly:
 
 - Spacetime dimension, metric signature, curvature-tensor convention, and definition of \(\Box\).
+- The displayed formulas currently use `d^4x`, which provisionally assumes four spacetime coordinates. Confirm that this is intended; if not, revise the measure and dimensional statements consistently throughout the specification.
 - Whether units are SI or natural units, and where factors of \(c\) and \(\hbar\) are retained.
 - The dimensions, normalization, domain, and allowed boundary conditions of \(\Phi\).
 - The integration measure and boundary terms; state which variations vanish at the boundary.
