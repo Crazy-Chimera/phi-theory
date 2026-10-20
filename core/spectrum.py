@@ -27,11 +27,15 @@ def normalize_spectrum(S: np.ndarray, omega: np.ndarray) -> np.ndarray:
     omega = np.asarray(omega, dtype=float)
     if S.ndim != 1 or omega.ndim != 1 or len(S) != len(omega):
         raise ValueError("S and omega must be one-dimensional arrays of equal length")
+    if not np.all(np.isfinite(S)):
+        raise ValueError("S values must be finite")
+    _validate_grid(omega)
     if len(omega) < 2:
         return S.copy()
-    _validate_grid(omega)
     norm_sq = float(trapezoid(np.abs(S) ** 2, x=omega))
-    if not np.isfinite(norm_sq) or norm_sq <= 0:
+    if not np.isfinite(norm_sq):
+        raise ValueError("spectrum norm must be finite")
+    if norm_sq <= 0:
         return S.copy()
     return S / np.sqrt(norm_sq)
 
