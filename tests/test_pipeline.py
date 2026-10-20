@@ -136,6 +136,13 @@ def test_predictions_load_and_dry_run():
 
 
 
+def test_feedback_rejects_invalid_status_inputs():
+    prediction_id = load_predictions()["predictions"][0]["id"]
+    for status in ("unknown", "", None, 42):
+        with np.testing.assert_raises(ValueError):
+            apply_feedback(prediction_id, status, dry_run=True)
+
+
 def test_confirmation_and_falsification_require_evidence_reference():
     prediction_id = load_predictions()["predictions"][0]["id"]
     for status in ("confirmed", "falsified"):
