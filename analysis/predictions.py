@@ -4,6 +4,7 @@ Prediction generation from Ω-resonant bands.
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Dict, List, Any
 import yaml
 from pathlib import Path
@@ -41,9 +42,21 @@ def load_predictions(path: Path = Path("registry/predictions.yaml")) -> List[Dic
 
 
 def save_predictions(predictions: List[Dict], path: Path = Path("registry/predictions.yaml")) -> None:
+    """Save prediction records while retaining existing registry-level metadata."""
+    data: Dict[str, Any] = {}
+    if path.exists():
+        with open(path, encoding="utf-8") as f:
+            loaded = yaml.safe_load(f) or {}
+        if isinstance(loaded, dict):
+            data = loaded.copy()
+
+    data.setdefault("version", "1.0.0")
+    data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    data["predictions"] = predictions
+
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        yaml.dump({"version": "1.0.0", "predictions": predictions}, f, allow_unicode=True, default_flow_style=False)
+        yaml.safe_dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
 
 
 def list_open_predictions(predictions: List[Dict] | None = None) -> List[Dict]:
