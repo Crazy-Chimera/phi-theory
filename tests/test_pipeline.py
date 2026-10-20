@@ -14,7 +14,7 @@ import yaml
 import analysis.feedback as feedback_module
 from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor, build_discrete_spectrum
 from core.resonance import compute_resonance, qualitative_resonance, interpolate_to_grid
-from core.emergence import identify_bands, compute_kernel, local_overlap_profile
+from core.emergence import identify_bands, compute_kernel, local_overlap_profile, analyze_kernel
 from analysis.feedback import load_predictions, apply_feedback, summary
 from analysis.predictions import save_predictions as save_prediction_records
 
@@ -159,7 +159,6 @@ def test_kernel_functions_reject_invalid_inputs():
     with np.testing.assert_raises_regex(ValueError, "computed kernel contains non-finite values"):
         compute_kernel(np.array([-1e-10]), np.ones(1), eps=1e-10)
     with np.testing.assert_raises_regex(ValueError, "K and omega must have equal lengths"):
-        from core.emergence import analyze_kernel
         analyze_kernel(np.ones(2), np.array([1.0]))
     with np.testing.assert_raises_regex(ValueError, "K and omega values must be finite"):
         from core.emergence import analyze_kernel
