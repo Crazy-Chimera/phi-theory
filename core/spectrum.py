@@ -32,12 +32,18 @@ def normalize_spectrum(S: np.ndarray, omega: np.ndarray) -> np.ndarray:
     _validate_grid(omega)
     if len(omega) < 2:
         return S.copy()
-    norm_sq = float(trapezoid(np.abs(S) ** 2, x=omega))
+    # Scale first: squaring large finite samples can overflow, while squaring
+    # tiny samples can underflow to zero even when the normalized shape is valid.
+    scale = float(np.max(np.abs(S))) if len(S) else 0.0
+    if scale == 0:
+        return S.copy()
+    scaled = S / scale
+    norm_sq = float(trapezoid(np.abs(scaled) ** 2, x=omega))
     if not np.isfinite(norm_sq):
         raise ValueError("spectrum norm must be finite")
     if norm_sq <= 0:
         return S.copy()
-    return S / np.sqrt(norm_sq)
+    return scaled / np.sqrt(norm_sq)
 
 
 def compute_spectrum_explicit(
