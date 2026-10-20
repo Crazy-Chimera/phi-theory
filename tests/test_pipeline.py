@@ -52,6 +52,13 @@ def test_normalize_spectrum_scales_extreme_finite_values():
         assert np.all(np.isfinite(spectrum))
         assert abs(float(trapezoid(np.abs(spectrum) ** 2, x=omega)) - 1.0) < 1e-12
 
+    # Complex magnitudes can overflow even when each component is finite.
+    component = np.finfo(float).max * 0.99
+    extreme_complex = np.full(omega.shape, component + 1j * component)
+    normalized = normalize_spectrum(extreme_complex, omega)
+    assert np.all(np.isfinite(normalized))
+    assert abs(float(trapezoid(np.abs(normalized) ** 2, x=omega)) - 1.0) < 1e-12
+
 
 def test_normalize_spectrum_nonuniform_grid():
     omega = np.logspace(-3, 2, 500)
