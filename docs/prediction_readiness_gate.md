@@ -65,6 +65,7 @@ An evidence reference must identify the material and its role; merely supplying 
 - `phi_theory_specification_audit.md` records the current equation-level gaps and the conditional variation of the displayed scalar action.
 - `master_equation_term_closure.md` identifies the missing definition or derivation for each term.
 - `complete_action_derivation_checklist.md` provides the full-action derivation workflow.
+- `closure_decision_register.md` orders the author decisions and evidence needed to close the model before any prediction can advance.
 - `experimental_roadmap.md` records provisional candidate platforms and ordering; internal spectral scores do not establish experimental priority.
 
 **Acceptance rule:** until the relevant prediction-specific requirements and the universal criteria are supported by reviewable artifacts, keep the prediction blocked for confirmatory use.
