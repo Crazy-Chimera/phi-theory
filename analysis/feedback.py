@@ -45,16 +45,23 @@ def apply_feedback(
     status: str,
     note: str = "",
     dry_run: bool = False,
+    evidence_reference: str = "",
 ) -> Dict[str, Any]:
-    """Record a workflow status without changing model-derived spectral values.
+    """Record workflow feedback without changing model-derived spectral values.
 
-    With dry_run=True, return the proposed record without writing files.
-    A status label alone is not evidence that a prediction was experimentally
-    confirmed or falsified, so it must not automatically rescale band strength.
+    A confirmed/falsified label requires a reference to supporting evidence.
+    The reference is a provenance pointer, not independent verification that
+    the evidence or conclusion is scientifically adequate. Dry runs never write.
     """
     status = status.lower().strip()
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status: {status}")
+    evidence_reference = evidence_reference.strip()
+    if status in {"confirmed", "falsified"} and not evidence_reference:
+        raise ValueError(
+            f"Status '{status}' requires an evidence_reference; "
+            "a status label alone is not experimental evidence"
+        )
 
     # Work on a detached copy so a dry run never mutates shared in-memory data.
     data = copy.deepcopy(load_predictions())
@@ -67,17 +74,20 @@ def apply_feedback(
     prediction["feedback"] = {
         "previous_status": old_status,
         "note": note,
+        "evidence_reference": evidence_reference or None,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "dry_run": dry_run,
     }
 
     if not dry_run:
         save_predictions(data)
-        _update_resonances_log(pred_id, status, note)
+        _update_resonances_log(pred_id, status, note, evidence_reference)
     return prediction
 
 
-def _update_resonances_log(pred_id: str, status: str, note: str) -> None:
+def _update_resonances_log(
+    pred_id: str, status: str, note: str, evidence_reference: str = ""
+) -> None:
     path = RESONANCES_PATH
     if path.exists():
         with open(path, encoding="utf-8") as file:
@@ -88,6 +98,7 @@ def _update_resonances_log(pred_id: str, status: str, note: str) -> None:
         "prediction_id": pred_id,
         "status": status,
         "note": note,
+        "evidence_reference": evidence_reference or None,
         "timestamp": datetime.now(timezone.utc).isoformat(),
     })
     data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
