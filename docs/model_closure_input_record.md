@@ -115,3 +115,33 @@ Until sections A–E are closed, label the master equation **unclosed ansatz**. 
 - [Master-equation term closure matrix](master_equation_term_closure.md)
 - [Complete-action derivation checklist](complete_action_derivation_checklist.md)
 - [Prediction registry audit](prediction_registry_audit.md)
+
+## G. Other registry claims that do not close the action
+
+The theory registry contains additional formulas and labels outside the displayed scalar action. They are recorded here so they are not silently treated as derived definitions. Their presence in YAML is evidence that the repository states them, not evidence that they follow from a common dynamical model.
+
+| Registry item | What is explicitly stated | What is still missing | Closure status |
+|---|---|---|---|
+| Field interpretation | \(\Phi\) is described as a real scalar field of “local entanglement density”; the listed basic unit is “informion”. | Operational definition of entanglement density, mathematical construction of an informion, units, measurement procedure, domain, and relation to the action normalization. | Descriptive label only |
+| \(\gamma\) and \(\eta\) values | The registry lists both as \(10^{-30}\). | Units, normalization convention, parameter-estimation method, uncertainty, applicable regime, and derivation or independent empirical provenance. | Listed values; not physically closed |
+| \(E=C/K\) | The registry names this as an “Elegance” formula. | Definitions and dimensions of \(E\), \(C\), and \(K\); domains, units, and derivation. The symbol \(C\) must also be reconciled with \(C(\Phi)\) in the action. | Undefined relation |
+| \(m=(\hbar/c^2)\langle dC/dt\rangle\) | The registry records this mass formula. | Definition of the averaging operation, operational time, units and meaning of \(C\), state/ensemble, and derivation from the action or another stated principle. | Underived formula |
+| \(\tau=1/(dC/dt)\) | The registry records this “subjective time” formula. | Definition and units of \(C\), domain where the derivative is nonzero, operational meaning of \(\tau\), and derivation. | Unresolved |
+| \(\Delta S\ge k_B\Delta C\) | The registry records this as a generalized Landauer relation. | Definition and units of \(C\), entropy convention, physical process and assumptions, and derivation or supporting evidence. | Unresolved |
+| \(\Omega=\Phi^{-1}d\Phi/dt\) | The registry records this bridge. | Definition of \(t\), domain where \(\Phi\ne0\), reference scale if a dimensionless quantity is intended, and an operational measurement map. | Formal expression only |
+
+These formulas must not be combined into a single closed theory merely because they share symbols. In particular, the meaning and dimensions of \(C\) in the action, the registry's other formulas, and the tensor notation \(T(C)_{\mu\nu}\) must be explicitly reconciled by the model author.
+
+## H. Minimum author-supplied closure package
+
+The following are concrete missing inputs, not choices to be guessed by an implementer:
+
+1. **One complete action** with explicit gravitational, scalar, matter, and additional/operator sectors—or a justified non-variational dynamical principle.
+2. **Convention sheet:** dimension, signature, curvature and \(\Box\) conventions, units, coordinates, boundary conditions, and independent fields.
+3. **Definition sheet:** \(\Phi,V,C,\Lambda,G,T(C)_{\mu\nu},\hat P,\lambda,\gamma,\eta\), including domains, dimensions, signs, parameter values, and provenance.
+4. **Derivation packet:** variations with respect to \(\Phi\), metric, matter fields, and auxiliary fields, plus source definitions and conservation/constraint identities.
+5. **Consistency packet:** term-by-term dimensions, well-posedness/initial-boundary data, and demonstrated limiting regimes.
+6. **Prediction packet:** a reproducible map from the derived fields to a specified observable, including baseline, uncertainties, and a preregistered decision rule.
+
+Until those source materials are supplied or supported by the model's existing derivation, these fields remain unresolved. This record does not substitute a guessed action or fabricated definitions for the missing inputs.
+
