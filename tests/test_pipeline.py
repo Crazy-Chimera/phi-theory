@@ -12,7 +12,7 @@ import numpy as np
 from scipy.integrate import trapezoid
 import yaml
 import analysis.feedback as feedback_module
-from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor
+from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor, build_discrete_spectrum
 from core.resonance import compute_resonance, qualitative_resonance
 from core.emergence import identify_bands, compute_kernel, local_overlap_profile
 from analysis.feedback import load_predictions, apply_feedback, summary
@@ -80,6 +80,30 @@ def test_local_overlap_profile_is_bounded_and_peak_normalized():
 
     zeros = local_overlap_profile(np.zeros_like(S1), S2, omega)
     assert np.all(zeros == 0.0)
+
+
+
+def test_discrete_spectrum_rejects_invalid_inputs():
+    grid = np.linspace(-2.0, 2.0, 101)
+    with np.testing.assert_raises_regex(ValueError, "equal non-zero lengths"):
+        build_discrete_spectrum(np.array([0.0, 1.0]), np.array([1.0]), grid)
+    with np.testing.assert_raises_regex(ValueError, "finite and positive"):
+        build_discrete_spectrum(np.array([0.0]), np.array([1.0]), grid, width=np.nan)
+    with np.testing.assert_raises_regex(ValueError, "finite and non-negative"):
+        build_discrete_spectrum(np.array([0.0]), np.array([-1.0]), grid)
+    with np.testing.assert_raises_regex(ValueError, "finite"):
+        build_discrete_spectrum(np.array([np.inf]), np.array([1.0]), grid)
+    with np.testing.assert_raises_regex(ValueError, "finite"):
+        build_discrete_spectrum(np.array([0.0]), np.array([1.0]), np.array([0.0, np.nan]))
+
+
+def test_discrete_spectrum_normalizes_valid_inputs():
+    grid = np.linspace(-5.0, 5.0, 1001)
+    spectrum = build_discrete_spectrum(
+        np.array([-1.0, 1.0]), np.array([0.25, 0.75]), grid, width=0.05
+    )
+    assert np.all(np.isfinite(spectrum))
+    assert abs(float(np.trapezoid(np.abs(spectrum) ** 2, x=grid)) - 1.0) < 1e-10
 
 
 def test_kernel_finite():
