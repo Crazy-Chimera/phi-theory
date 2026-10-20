@@ -6,7 +6,7 @@
 |---|---|
 | **Author** | Michael Chodounsky $(R = 12)$ – Reality Traveler |
 | **Repository** | Runnable Ω-RE assistant + Phi-Theory registry |
-| **Status** | Software protocol complete · awaiting experimental feedback |
+| **Status** | Software workflow implemented · physical model closure and experimental validation pending |
 
 ---
 
@@ -32,9 +32,11 @@ $$
 
 ### Bridge
 
-$$
+$
 \Omega = \frac{1}{\Phi}\frac{d\Phi}{dt}
-$$
+$
+
+> **Scientific status:** The master equation above is currently an ansatz, not a derivation from the displayed scalar action. The listed resonance scores are model-internal descriptors; they are not probabilities, confidence levels, or empirically validated effects. P1–P6 remain blocked for confirmatory testing until each has a derived observable, operational measurement mapping, baseline/uncertainty model, and preregistered decision rule. See [`docs/complete_action_derivation_checklist.md`](docs/complete_action_derivation_checklist.md), [`docs/prediction_readiness_gate.md`](docs/prediction_readiness_gate.md), and [`docs/model_closure_input_record.md`](docs/model_closure_input_record.md).
 
 ---
 
