@@ -317,7 +317,62 @@ def test_feedback_rolls_back_registry_if_resonance_replace_fails(
 
     assert predictions_path.read_bytes() == prediction_bytes
     assert resonances_path.read_bytes() == resonance_bytes
-    assert not list(tmp_path.glob("*.tmp"))
+    assert not [path for path in tmp_path.iterdir() if path.name.endswith(".tmp")]
+
+
+def test_feedback_reports_rollback_failure_explicitly(tmp_path, monkeypatch):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    original_predictions = {
+        "version": "test",
+        "predictions": [{"id": "P-test", "status": "undecided"}],
+    }
+    original_resonances = {
+        "version": "test-log",
+        "entries": [{"prediction_id": "P-existing", "status": "untested"}],
+    }
+    predictions_path.write_text(
+        yaml.safe_dump(original_predictions), encoding="utf-8"
+    )
+    resonances_path.write_text(
+        yaml.safe_dump(original_resonances), encoding="utf-8"
+    )
+    original_log_bytes = resonances_path.read_bytes()
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    real_replace = feedback_module.os.replace
+    prediction_replacements = 0
+
+    def fail_resonance_and_rollback(source, destination):
+        nonlocal prediction_replacements
+        destination = Path(destination)
+        if destination == predictions_path:
+            prediction_replacements += 1
+            # First replacement commits the updated registry; the second is rollback.
+            if prediction_replacements == 2:
+                raise OSError("simulated rollback failure")
+        if destination == resonances_path:
+            raise OSError("simulated resonance-log replacement failure")
+        return real_replace(source, destination)
+
+    monkeypatch.setattr(feedback_module.os, "replace", fail_resonance_and_rollback)
+
+    with np.testing.assert_raises_regex(
+        RuntimeError, "prediction-registry rollback also failed"
+    ):
+        apply_feedback(
+            "P-test",
+            "confirmed",
+            evidence_reference="test-fixture://rollback-failure",
+        )
+
+    # The failure is deliberately unrecoverable in this test: callers must be
+    # told to inspect both files rather than assuming the pair was restored.
+    saved_predictions = yaml.safe_load(predictions_path.read_text(encoding="utf-8"))
+    assert saved_predictions["predictions"][0]["status"] == "confirmed"
+    assert resonances_path.read_bytes() == original_log_bytes
+    assert not [path for path in tmp_path.iterdir() if path.name.endswith(".tmp")]
 
 
 if __name__ == "__main__":
