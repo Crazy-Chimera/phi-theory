@@ -15,6 +15,8 @@ from typing import Dict, Tuple, Optional
 def _validate_grid(omega: np.ndarray) -> None:
     if omega.ndim != 1:
         raise ValueError("omega must be a one-dimensional array")
+    if not np.all(np.isfinite(omega)):
+        raise ValueError("omega values must be finite")
     if len(omega) > 1 and not np.all(np.diff(omega) > 0):
         raise ValueError("omega must be strictly increasing")
 
@@ -32,9 +34,11 @@ def compute_resonance(
         raise ValueError("S1, S2, and omega must be one-dimensional")
     if not (len(S1) == len(S2) == len(omega)):
         raise ValueError("S1, S2, and omega must have equal lengths")
+    if not np.all(np.isfinite(S1)) or not np.all(np.isfinite(S2)):
+        raise ValueError("S1 and S2 values must be finite")
+    _validate_grid(omega)
     if len(omega) < 2:
         return 0.0
-    _validate_grid(omega)
 
     cross = trapezoid(S1 * np.conj(S2), x=omega)
     norm1 = float(trapezoid(np.abs(S1) ** 2, x=omega))
@@ -55,13 +59,16 @@ def interpolate_to_grid(
     omega_src = np.asarray(omega_src, dtype=float)
     omega_target = np.asarray(omega_target, dtype=float)
     S_src = np.asarray(S_src)
-    if len(omega_src) != len(S_src):
-        raise ValueError("omega_src and S_src must have equal lengths")
+    if omega_src.ndim != 1 or omega_target.ndim != 1 or S_src.ndim != 1:
+        raise ValueError("omega_src, S_src, and omega_target must be one-dimensional")
+    if len(omega_src) != len(S_src) or len(omega_src) == 0:
+        raise ValueError("omega_src and S_src must have equal non-zero lengths")
+    _validate_grid(omega_src)
+    _validate_grid(omega_target)
+    if not np.all(np.isfinite(S_src)):
+        raise ValueError("S_src values must be finite")
     if np.any(omega_src <= 0) or np.any(omega_target <= 0):
         raise ValueError("log-scale interpolation requires positive frequencies")
-    _validate_grid(omega_src)
-    if len(omega_target) > 1:
-        _validate_grid(omega_target)
     log_src = np.log10(omega_src)
     log_tgt = np.log10(omega_target)
     real = np.interp(log_tgt, log_src, np.real(S_src), left=0.0, right=0.0)
