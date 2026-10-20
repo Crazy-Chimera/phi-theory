@@ -94,6 +94,7 @@ Until sections A–E are closed, label the master equation **unclosed ansatz**. 
 
 ## Related audits
 
+- [Closure decision register](closure_decision_register.md) — use alongside this fill-in record to track dependency order and acceptance evidence; it does not fill in missing author choices.
 - [Mathematical specification audit](phi_theory_specification_audit.md)
 - [Master-equation term closure matrix](master_equation_term_closure.md)
 - [Complete-action derivation checklist](complete_action_derivation_checklist.md)
