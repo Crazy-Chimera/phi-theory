@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 
 from core.spectrum import build_spectrum_from_descriptor, normalize_spectrum
 from core.resonance import compute_resonance, qualitative_resonance
-from core.emergence import identify_bands, interpret_band, compute_kernel
+from core.emergence import identify_bands, interpret_band, compute_kernel, local_overlap_profile
 
 
 def load_theories(path: Path = ROOT / "registry" / "theories.yaml") -> list:
@@ -103,16 +103,12 @@ def cmd_bands(args: argparse.Namespace) -> None:
     S1 = spectrum_of(t1, grid)
     S2 = spectrum_of(t2, grid)
 
-    prod = np.abs(S1 * np.conj(S2))
-    win = min(201, max(3, len(prod) // 10 * 2 + 1))
-    kernel = np.ones(win) / win
-    R_curve = np.convolve(prod, kernel, mode="same")
-    if R_curve.max() > 0:
-        R_curve = R_curve / R_curve.max()
-
+    # Band detection uses a peak-normalized local overlap profile, not the
+    # global integrated resonance score printed by the "resonance" command.
+    R_curve = local_overlap_profile(S1, S2, grid, smoothing_window=201)
     bands = identify_bands(grid, R_curve, threshold=args.threshold)
 
-    print(f"Bands for  {args.t1}  ↔  {args.t2}  (threshold = {args.threshold})")
+    print(f"Bands for  {args.t1}  ↔  {args.t2}  (local-profile threshold = {args.threshold})")
     print(f"Found {len(bands)} band(s)\n")
     for i, b in enumerate(bands, 1):
         print(f"  Band {i}:")
