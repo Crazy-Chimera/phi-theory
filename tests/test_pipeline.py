@@ -68,6 +68,29 @@ def test_qualitative_and_bands():
 
 
 
+def test_descriptor_rejects_undersized_explicit_grid():
+    descriptor = {
+        "peak_centers": [1.0],
+        "peak_widths": [0.5],
+        "peak_weights": [1.0],
+    }
+    for grid in (np.array([]), np.array([1.0])):
+        with np.testing.assert_raises_regex(ValueError, "at least two points"):
+            build_spectrum_from_descriptor(descriptor, omega_grid=grid)
+
+
+def test_descriptor_rejects_invalid_sample_count():
+    descriptor = {
+        "peak_centers": [1.0],
+        "peak_widths": [0.5],
+        "peak_weights": [1.0],
+    }
+    for n_samples in (1, 2.5, True):
+        with np.testing.assert_raises_regex(ValueError, "integer of at least 2"):
+            build_spectrum_from_descriptor(descriptor, n_samples=n_samples)
+
+
+
 def test_local_overlap_profile_is_bounded_and_peak_normalized():
     omega = np.logspace(-3, 2, 501)
     S1 = np.exp(-((np.log10(omega) - 0.5) ** 2) / 0.2) + 0j
