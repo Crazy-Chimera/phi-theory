@@ -27,7 +27,7 @@ No reviewed repository record supplies author-confirmed choices for spacetime di
 | Spacetime dimension | [author confirmation required] | The displayed measure is written as `d^4x`; this is evidence about the notation, not confirmation of the intended physical dimension. | unresolved |
 | Metric signature | [fill in] | [reference or rationale] | unresolved |
 | Curvature convention | [fill in] | [reference or rationale] | unresolved |
-| Definition of \(\Box\) | [fill in] | [reference or rationale] | unresolved |
+| Definition of \\(\\Box\\) | [author confirmation required] | The symbol appears in the ansatz and conditional scalar equation, but no precise operator/sign convention is fixed. | unresolved |
 | Unit system; treatment of \(c,\hbar\) | [fill in] | [reference or rationale] | unresolved |
 | Integration measure and coordinates | [author confirmation required] | The scalar action is written with `d^4x√(-g)`; coordinate dimensions and any omitted overall prefactor are not specified. | unresolved |
 | Boundary conditions | [fill in] | [reference or rationale] | unresolved |
