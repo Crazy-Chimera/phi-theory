@@ -143,6 +143,18 @@ def test_feedback_rejects_invalid_status_inputs():
             apply_feedback(prediction_id, status, dry_run=True)
 
 
+def test_feedback_rejects_non_string_evidence_reference():
+    prediction_id = load_predictions()["predictions"][0]["id"]
+    for reference in (None, 42):
+        with np.testing.assert_raises_regex(ValueError, "evidence_reference must be a string"):
+            apply_feedback(
+                prediction_id,
+                "confirmed",
+                dry_run=True,
+                evidence_reference=reference,
+            )
+
+
 def test_confirmation_and_falsification_require_evidence_reference():
     prediction_id = load_predictions()["predictions"][0]["id"]
     for status in ("confirmed", "falsified"):
