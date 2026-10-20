@@ -55,6 +55,8 @@ def apply_feedback(
     The reference is a provenance pointer, not independent verification that
     the evidence or conclusion is scientifically adequate. Dry runs never write.
     """
+    if not isinstance(status, str):
+        raise ValueError("status must be a string")
     status = status.lower().strip()
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status: {status}")
