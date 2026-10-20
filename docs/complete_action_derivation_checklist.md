@@ -98,6 +98,7 @@ Use the [model-closure input record](model_closure_input_record.md) to collect e
 
 ## Relationship to other audits
 
+- [Closure decision register](closure_decision_register.md) — dependency-ordered decisions and acceptance evidence for moving from an unclosed ansatz to a derived model.
 - [Mathematical specification audit](phi_theory_specification_audit.md)
 - [Master-equation term closure matrix](master_equation_term_closure.md)
 - [Conditional dimensional-closure worksheet](conditional_dimensional_closure.md)
