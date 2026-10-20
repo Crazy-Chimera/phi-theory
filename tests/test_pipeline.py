@@ -103,7 +103,7 @@ def test_discrete_spectrum_normalizes_valid_inputs():
         np.array([-1.0, 1.0]), np.array([0.25, 0.75]), grid, width=0.05
     )
     assert np.all(np.isfinite(spectrum))
-    assert abs(float(np.trapezoid(np.abs(spectrum) ** 2, x=grid)) - 1.0) < 1e-10
+    assert abs(float(trapezoid(np.abs(spectrum) ** 2, x=grid)) - 1.0) < 1e-10
 
 
 def test_kernel_finite():
