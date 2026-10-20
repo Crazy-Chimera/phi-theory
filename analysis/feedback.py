@@ -7,6 +7,8 @@ Statuses: untested | confirmed | falsified | undecided
 from __future__ import annotations
 
 from pathlib import Path
+import os
+import tempfile
 from typing import Dict, List, Optional, Any
 import copy
 import yaml
@@ -89,10 +91,10 @@ def apply_feedback(
         # Parse and validate the second file before writing the first, so a
         # malformed log cannot leave the registry updated on its own.
         resonance_data = _load_resonances_log(RESONANCES_PATH)
-        save_predictions(data)
-        _update_resonances_log(
-            pred_id, status, note, evidence_reference, data=resonance_data
+        _append_resonance_entry(
+            resonance_data, pred_id, status, note, evidence_reference
         )
+        _persist_feedback_pair(data, resonance_data)
     return prediction
 
 
@@ -111,16 +113,14 @@ def _load_resonances_log(path: Path) -> Dict[str, Any]:
     return data
 
 
-def _update_resonances_log(
+def _append_resonance_entry(
+    data: Dict[str, Any],
     pred_id: str,
     status: str,
     note: str,
     evidence_reference: str = "",
-    data: Optional[Dict[str, Any]] = None,
 ) -> None:
-    path = RESONANCES_PATH
-    data = _load_resonances_log(path) if data is None else data
-    data.setdefault("entries", []).append({
+    data["entries"].append({
         "prediction_id": pred_id,
         "status": status,
         "note": note,
@@ -128,9 +128,79 @@ def _update_resonances_log(
         "timestamp": datetime.now(timezone.utc).isoformat(),
     })
     data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _stage_bytes(path: Path, payload: bytes) -> Path:
+    """Write and fsync a temporary file beside its destination."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as file:
-        yaml.safe_dump(data, file, allow_unicode=True, default_flow_style=False, sort_keys=False)
+    fd, temp_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(fd, "wb") as file:
+            file.write(payload)
+            file.flush()
+            os.fsync(file.fileno())
+    except BaseException:
+        temp_path.unlink(missing_ok=True)
+        raise
+    return temp_path
+
+
+def _atomic_write_bytes(path: Path, payload: bytes) -> None:
+    temp_path = _stage_bytes(path, payload)
+    try:
+        os.replace(temp_path, path)
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
+def _persist_feedback_pair(
+    predictions: Dict[str, Any], resonances: Dict[str, Any]
+) -> None:
+    """Stage both YAML files and roll back the first replacement if the second fails.
+
+    This narrows ordinary partial-write failures, but cannot guarantee recovery
+    from process termination or power loss between the two replacements.
+    """
+    prediction_path = PREDICTIONS_PATH
+    resonance_path = RESONANCES_PATH
+    prediction_payload = yaml.safe_dump(
+        predictions, allow_unicode=True, default_flow_style=False, sort_keys=False
+    ).encode("utf-8")
+    resonance_payload = yaml.safe_dump(
+        resonances, allow_unicode=True, default_flow_style=False, sort_keys=False
+    ).encode("utf-8")
+
+    original_prediction = prediction_path.read_bytes() if prediction_path.exists() else None
+    staged_prediction = _stage_bytes(prediction_path, prediction_payload)
+    try:
+        staged_resonance = _stage_bytes(resonance_path, resonance_payload)
+    except BaseException:
+        staged_prediction.unlink(missing_ok=True)
+        raise
+
+    prediction_replaced = False
+    try:
+        os.replace(staged_prediction, prediction_path)
+        prediction_replaced = True
+        os.replace(staged_resonance, resonance_path)
+    except BaseException:
+        if prediction_replaced:
+            try:
+                if original_prediction is None:
+                    prediction_path.unlink(missing_ok=True)
+                else:
+                    _atomic_write_bytes(prediction_path, original_prediction)
+            except BaseException as rollback_error:
+                raise RuntimeError(
+                    "feedback persistence failed and prediction-registry rollback also failed"
+                ) from rollback_error
+        raise
+    finally:
+        staged_prediction.unlink(missing_ok=True)
+        staged_resonance.unlink(missing_ok=True)
 
 
 def list_by_status(status: Optional[str] = None) -> List[Dict]:
