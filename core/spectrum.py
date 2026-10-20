@@ -123,9 +123,15 @@ def build_spectrum_from_descriptor(
         raise ValueError("peak centers must be finite and positive")
     if np.any(~np.isfinite(widths)) or np.any(widths <= 0):
         raise ValueError("peak widths must be finite and positive")
-    if np.any(~np.isfinite(weights)) or np.any(weights < 0) or np.sum(weights) <= 0:
-        raise ValueError("peak weights must be finite, non-negative, and have a positive sum")
-    weights = weights / np.sum(weights)
+    if not np.all(np.isfinite(weights)) or np.any(weights < 0):
+        raise ValueError("peak weights must be finite and non-negative")
+    # Finite entries can still overflow when summed; reject that instead of
+    # dividing by infinity and silently producing an all-zero spectrum.
+    with np.errstate(over="ignore", invalid="ignore"):
+        weight_sum = float(np.sum(weights))
+    if not np.isfinite(weight_sum) or weight_sum <= 0:
+        raise ValueError("peak weights must have a finite positive sum")
+    weights = weights / weight_sum
 
     if omega_grid is None:
         if not isinstance(n_samples, (int, np.integer)) or isinstance(n_samples, bool) or n_samples < 2:
