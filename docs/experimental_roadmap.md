@@ -15,4 +15,8 @@
 2. Mine existing clock/α papers for P4 covariates
 3. P1 literature-only until metric fixed
 
-*Roadmap v1.0*
+## P2 readiness gate
+
+P2 remains a **planning-stage hypothesis**, not a validated empirical prediction. Before confirmatory testing, complete [`prediction_validation_P2.md`](prediction_validation_P2.md), including the Ω-to-laboratory mapping, operational observable, derived effect size, baseline/noise model, and preregistered decision rule. Do not update P2 status based solely on its spectral overlap score or a band visualization.
+
+*Roadmap v1.1*
