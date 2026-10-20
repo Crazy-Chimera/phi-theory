@@ -211,6 +211,14 @@ def test_feedback_persists_provenance_without_changing_band(tmp_path, monkeypatc
     predictions_path.write_text(
         yaml.safe_dump(original, allow_unicode=True), encoding="utf-8"
     )
+    original_log = {
+        "version": "log-test",
+        "custom_metadata": {"source": "pre-existing log"},
+        "entries": [{"prediction_id": "P-existing", "status": "undecided"}],
+    }
+    resonances_path.write_text(
+        yaml.safe_dump(original_log, allow_unicode=True), encoding="utf-8"
+    )
     monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
     monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
 
@@ -233,6 +241,9 @@ def test_feedback_persists_provenance_without_changing_band(tmp_path, monkeypatc
     assert saved_prediction["custom_field"] == "preserve me"
     assert saved_predictions["version"] == "test"
     assert saved_predictions["custom_metadata"] == original["custom_metadata"]
+    assert saved_log["version"] == "log-test"
+    assert saved_log["custom_metadata"] == original_log["custom_metadata"]
+    assert saved_log["entries"][0] == original_log["entries"][0]
     assert saved_log["entries"][-1]["evidence_reference"] == reference
     assert saved_log["entries"][-1]["prediction_id"] == "P-test"
     assert saved_log["entries"][-1]["status"] == "confirmed"
