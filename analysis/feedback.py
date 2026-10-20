@@ -86,20 +86,40 @@ def apply_feedback(
     }
 
     if not dry_run:
+        # Parse and validate the second file before writing the first, so a
+        # malformed log cannot leave the registry updated on its own.
+        resonance_data = _load_resonances_log(RESONANCES_PATH)
         save_predictions(data)
-        _update_resonances_log(pred_id, status, note, evidence_reference)
+        _update_resonances_log(
+            pred_id, status, note, evidence_reference, data=resonance_data
+        )
     return prediction
 
 
-def _update_resonances_log(
-    pred_id: str, status: str, note: str, evidence_reference: str = ""
-) -> None:
-    path = RESONANCES_PATH
+def _load_resonances_log(path: Path) -> Dict[str, Any]:
+    """Load and validate the resonance log before any paired registry write."""
     if path.exists():
         with open(path, encoding="utf-8") as file:
             data = yaml.safe_load(file) or {}
     else:
         data = {"version": "1.0.0", "entries": []}
+    if not isinstance(data, dict):
+        raise ValueError("resonance log must contain a YAML mapping")
+    entries = data.setdefault("entries", [])
+    if not isinstance(entries, list):
+        raise ValueError("resonance log 'entries' must be a YAML list")
+    return data
+
+
+def _update_resonances_log(
+    pred_id: str,
+    status: str,
+    note: str,
+    evidence_reference: str = "",
+    data: Optional[Dict[str, Any]] = None,
+) -> None:
+    path = RESONANCES_PATH
+    data = _load_resonances_log(path) if data is None else data
     data.setdefault("entries", []).append({
         "prediction_id": pred_id,
         "status": status,
