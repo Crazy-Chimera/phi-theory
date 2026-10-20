@@ -44,16 +44,17 @@ def apply_feedback(
     pred_id: str,
     status: str,
     note: str = "",
-    strengthen: float = 0.05,
-    weaken: float = 0.05,
     dry_run: bool = False,
 ) -> Dict[str, Any]:
-    """Apply feedback; with dry_run=True, return the proposed change without writing files."""
+    """Record a workflow status without changing model-derived spectral values.
+
+    With dry_run=True, return the proposed record without writing files.
+    A status label alone is not evidence that a prediction was experimentally
+    confirmed or falsified, so it must not automatically rescale band strength.
+    """
     status = status.lower().strip()
     if status not in VALID_STATUSES:
         raise ValueError(f"Invalid status: {status}")
-    if strengthen < 0 or weaken < 0:
-        raise ValueError("strengthen and weaken must be non-negative")
 
     # Work on a detached copy so a dry run never mutates shared in-memory data.
     data = copy.deepcopy(load_predictions())
@@ -69,18 +70,6 @@ def apply_feedback(
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "dry_run": dry_run,
     }
-
-    band = prediction.get("band")
-    if band is not None:
-        strength = float(band.get("strength", band.get("max", 1.0)))
-        if status == "confirmed":
-            band["strength"] = min(1.0, strength + strengthen)
-            band["feedback_effect"] = "strengthened"
-        elif status == "falsified":
-            band["strength"] = max(0.0, strength - weaken)
-            band["feedback_effect"] = "weakened"
-        else:
-            band["feedback_effect"] = "unchanged"
 
     if not dry_run:
         save_predictions(data)
