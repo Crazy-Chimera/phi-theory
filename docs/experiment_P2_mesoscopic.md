@@ -7,7 +7,7 @@
 | **Spectral R_Ω** | ≈ 0.518 |
 | **Band** | Ω ∈ [3.39×10⁻⁵, 0.216], center ≈ 2.71×10⁻³ |
 | **Observable** | ΔR (mesoscopic) — deviation from pure Schrödinger evolution |
-| **Status** | undecided (design ready) |
+| **Status** | undecided (planning stage; confirmatory test blocked) |
 | **Priority** | #2 overall; #1 among near-term lab tests |
 
 ---
@@ -38,11 +38,11 @@ Phi-Theory treats entanglement density Φ as fundamental. In the mesoscopic wind
 
 **Null (standard QM):** Dynamics fully described by Schrödinger / Lindblad evolution with environment-independent constants.
 
-**Alternative (Phi / Ω-RE):** Inside the resonant Ω band, a small systematic residual appears (interference visibility, level spacing, decoherence rates) correlating with proxies for local Φ.
+**Alternative (Phi / Ω-RE; not yet quantitatively specified):** The framework proposes a possible systematic residual inside a resonant Ω band, correlated with a proxy for local Φ. The repository does not yet derive a unique observable or quantitative laboratory prediction from this proposal.
 
-$$\Delta R = (R_{obs} - R_{QM}) / R_{QM}$$
+$\Delta R = (R_{obs} - R_{QM}) / R_{QM}$
 
-Registry target scale: $\Delta R \sim 0.05$ (to be refined).
+This expression is only a placeholder until the experimental meaning of $R_{obs}$ and $R_{QM}$, their estimator, units, and uncertainty are defined. The registry target $\Delta R \sim 0.05$ is currently unsupported by a derivation and must not be treated as a measured or model-derived effect size. The mapping from $\Omega$ to controllable laboratory variables is also missing. P2 is therefore **not ready for confirmatory testing**. See [`prediction_validation_P2.md`](prediction_validation_P2.md).
 
 ---
 
@@ -83,11 +83,11 @@ python omega_re.py feedback P2 undecided --note "systematics limited"
 
 ---
 
-## 8. Minimal first experiment (6–12 months)
+## 8. Exploratory work only (timeline conditional on model completion)
 
-1. Single/double quantum-dot + microwave resonator.
-2. Ramsey/echo contrast vs multi-electron occupation.
-3. Fit standard QM; publish residual budget.
-4. Escalate if residual > threshold and correlates with entanglement proxy.
+1. Specify and justify a measurable Φ proxy and the Ω-to-laboratory mapping.
+2. Derive a signed, dimensioned effect prediction (or a justified distribution) from the model.
+3. Define the standard-QM baseline, nuisance/noise model, power calculation, and preregistered decision rule.
+4. Only then choose a platform and run pilot/confirmatory measurements. Until those prerequisites are met, any hardware study is exploratory and cannot confirm or falsify P2.
 
 *Document version 1.0*
