@@ -249,6 +249,32 @@ def test_feedback_persists_provenance_without_changing_band(tmp_path, monkeypatc
     assert saved_log["entries"][-1]["status"] == "confirmed"
 
 
+def test_malformed_resonance_log_does_not_partially_update_registry(tmp_path, monkeypatch):
+    predictions_path = tmp_path / "predictions.yaml"
+    resonances_path = tmp_path / "resonances.yaml"
+    original = {
+        "version": "test",
+        "predictions": [{"id": "P-test", "status": "undecided"}],
+    }
+    predictions_path.write_text(
+        yaml.safe_dump(original, allow_unicode=True), encoding="utf-8"
+    )
+    original_bytes = predictions_path.read_bytes()
+    resonances_path.write_text("entries: [unterminated", encoding="utf-8")
+    monkeypatch.setattr(feedback_module, "PREDICTIONS_PATH", predictions_path)
+    monkeypatch.setattr(feedback_module, "RESONANCES_PATH", resonances_path)
+
+    with np.testing.assert_raises(yaml.YAMLError):
+        apply_feedback(
+            "P-test",
+            "confirmed",
+            evidence_reference="test-fixture://malformed-log",
+        )
+
+    assert predictions_path.read_bytes() == original_bytes
+    assert yaml.safe_load(predictions_path.read_text(encoding="utf-8")) == original
+
+
 if __name__ == "__main__":
     test_normalize_spectrum_nonuniform_grid()
     test_resonance_invariants_on_nonuniform_grid()
