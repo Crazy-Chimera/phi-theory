@@ -13,7 +13,7 @@
 
 ## Research sequence
 
-1. Complete the mathematical specification audit and derive a closed set of field equations from an explicit action.
+1. Complete the mathematical specification audit and derive a closed set of field equations from an explicit action, using the [complete-action derivation checklist](complete_action_derivation_checklist.md).
 2. Define units and operational meanings for Φ, Ω, C, and all couplings; check dimensions term by term.
 3. For each prediction P1–P6, separate model assumptions from empirical evidence and identify unsupported numerical targets.
 4. Select one candidate observable only where a derivation yields a quantitative, falsifiable prediction.
