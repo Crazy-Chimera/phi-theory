@@ -70,12 +70,12 @@ python tests/test_pipeline.py
 
 1. Spectral decomposition → 2. Resonance → 3. Bands → 4. Kernel → 5. Predictions → **6. Feedback**
 
-Steps 1–5 are implemented. Step 6 waits for real data — see `docs/contribute_results.md`.
+Steps 1–5 are implemented. Step 6 waits for real data — see `docs/contribute_results.md`. P2 is not ready for confirmatory testing; see [`docs/prediction_validation_P2.md`](docs/prediction_validation_P2.md).
 
 | ID | Pair | $R_\Omega$ | Status |
 |----|------|------------|--------|
 | P1 | Phi ↔ LQG | 0.591 | undecided |
-| P2 | Phi ↔ QM | 0.518 | undecided (lab design ready) |
+| P2 | Phi ↔ QM | 0.518 | undecided (planning; validation blocked) |
 | P3 | Phi ↔ SM | 0.453 | untested |
 | P4 | Phi ↔ QED | 0.428 | untested |
 | P5 | Phi ↔ GR | 0.225 | untested |
