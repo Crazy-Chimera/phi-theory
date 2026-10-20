@@ -13,7 +13,7 @@ from scipy.integrate import trapezoid
 import yaml
 import analysis.feedback as feedback_module
 from core.spectrum import normalize_spectrum, build_spectrum_from_descriptor, build_discrete_spectrum
-from core.resonance import compute_resonance, qualitative_resonance
+from core.resonance import compute_resonance, qualitative_resonance, interpolate_to_grid
 from core.emergence import identify_bands, compute_kernel, local_overlap_profile
 from analysis.feedback import load_predictions, apply_feedback, summary
 from analysis.predictions import save_predictions as save_prediction_records
@@ -42,6 +42,17 @@ def test_resonance_rejects_invalid_grids():
         compute_resonance(np.ones(3), np.ones(3), np.array([1.0, 1.0, 2.0]))
     with np.testing.assert_raises(ValueError):
         normalize_spectrum(np.ones(3), np.array([1.0, 3.0, 2.0]))
+
+
+def test_resonance_rejects_nonfinite_inputs():
+    with np.testing.assert_raises_regex(ValueError, "omega values must be finite"):
+        compute_resonance(np.ones(2), np.ones(2), np.array([1.0, np.nan]))
+    with np.testing.assert_raises_regex(ValueError, "S1 and S2 values must be finite"):
+        compute_resonance(np.array([1.0, np.inf]), np.ones(2), np.array([1.0, 2.0]))
+    with np.testing.assert_raises_regex(ValueError, "omega_src and S_src must have equal non-zero lengths"):
+        interpolate_to_grid(np.array([]), np.array([]), np.array([1.0, 2.0]))
+    with np.testing.assert_raises_regex(ValueError, "omega values must be finite"):
+        interpolate_to_grid(np.array([1.0, 2.0]), np.ones(2), np.array([1.0, np.inf]))
 
 
 
@@ -517,6 +528,7 @@ if __name__ == "__main__":
     test_normalize_spectrum_nonuniform_grid()
     test_resonance_invariants_on_nonuniform_grid()
     test_resonance_rejects_invalid_grids()
+    test_resonance_rejects_nonfinite_inputs()
     test_build_descriptor_and_resonance()
     test_invalid_descriptor_rejected()
     test_descriptor_rejects_overflowing_weight_sum()
