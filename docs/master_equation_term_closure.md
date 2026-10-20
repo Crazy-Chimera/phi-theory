@@ -94,6 +94,7 @@ If any item is unavailable, mark that term **unclosed** rather than supplying a 
 - [Mathematical specification audit](phi_theory_specification_audit.md)
 - [Complete-action derivation checklist](complete_action_derivation_checklist.md)
 - [Model-closure input record](model_closure_input_record.md)
+- [Conditional dimensional-closure worksheet](conditional_dimensional_closure.md)
 - [Prediction registry audit](prediction_registry_audit.md)
 - [Prediction readiness gate](prediction_readiness_gate.md)
 - [Experimental roadmap](experimental_roadmap.md)
